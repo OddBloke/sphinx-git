@@ -1,3 +1,4 @@
+from datetime import datetime
 from shutil import rmtree
 from tempfile import mkdtemp
 
@@ -7,6 +8,8 @@ from mock import Mock
 
 from tests.assertions import (
     assert_equal,
+    assert_greater,
+    assert_less_equal,
     assert_in,
     assert_not_in,
     assert_raises,
@@ -57,7 +60,7 @@ class TestWithRepository(TempDirTestCase):
         l = list_markup.bullet_list
         assert_equal(1, len(l.findAll('list_item')))
 
-    def test_single_commit_display(self):
+    def test_single_commit_message_and_user_display(self):
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
         list_markup = BeautifulStoneSoup(str(nodes[0]))
@@ -66,6 +69,18 @@ class TestWithRepository(TempDirTestCase):
         assert_equal(5, len(children))
         assert_equal('my root commit', children[0].text)
         assert_equal('Test User', children[2].text)
+
+    def test_single_commit_time_display(self):
+        self.repo.index.commit('my root commit')
+        before = datetime.now().replace(microsecond=0)
+        nodes = self.changelog.run()
+        after = datetime.now()
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        timestamp = datetime.strptime(children[4].text, '%Y-%m-%d %H:%M:%S')
+        assert_less_equal(before, timestamp)
+        assert_greater(after, timestamp)
 
     def test_more_than_ten_commits(self):
         for n in range(15):
