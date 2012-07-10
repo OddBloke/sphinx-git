@@ -1,2 +1,3 @@
 sphinx_git.egg-info/
 dist/
+*.pyc
