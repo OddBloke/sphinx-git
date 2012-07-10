@@ -3,7 +3,13 @@ from tempfile import mkdtemp
 
 from git import InvalidGitRepositoryError, Repo
 from mock import Mock
-from nose.tools import assert_equal, assert_in, assert_not_in, assert_raises
+
+from tests.assertions import (
+    assert_equal,
+    assert_in,
+    assert_not_in,
+    assert_raises,
+)
 
 from sphinx_git import GitChangelog
 
