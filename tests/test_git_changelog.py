@@ -72,10 +72,10 @@ class TestWithRepository(TempDirTestCase):
             self.repo.index.commit('commit #{0}'.format(n))
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
-        list_node = nodes[0]
-        assert_equal(10, len(list_node))
-        list_markup = str(list_node)
-        assert_in('<bullet_list>', list_markup)
-        for n in range(5, 15):
-            assert_in('commit #{0}'.format(n), list_markup)
-        assert_not_in('commit #4', list_markup)
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        assert_equal(1, len(list_markup.findAll('bullet_list')))
+        l = list_markup.bullet_list
+        assert_equal(10, len(l.findAll('list_item')))
+        for n, child in zip(range(15, 5), l.childGenerator()):
+            assert_in('commit #{0}'.format(n), child.text)
+        assert_not_in('commit #4', l.text)
