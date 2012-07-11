@@ -29,17 +29,24 @@ class GitChangelog(Directive):
         l = nodes.bullet_list()
         for commit in list(commits)[:10]:
             date_str = datetime.fromtimestamp(commit.authored_date)
+            if '\n' in commit.message:
+                message, detailed_message = commit.message.split('\n', 1)
+            else:
+                message = commit.message
+                detailed_message = None
+
             item = nodes.list_item()
             item += [
-                nodes.strong(text=commit.message),
+                nodes.strong(text=message),
                 nodes.inline(text=" by "),
                 nodes.emphasis(text=str(commit.author)),
                 nodes.inline(text=" at "),
                 nodes.emphasis(text=str(date_str))
             ]
+            if detailed_message:
+                item.append(nodes.caption(text=detailed_message.strip()))
             l.append(item)
         return [l]
-
 
 
 def setup(app):
