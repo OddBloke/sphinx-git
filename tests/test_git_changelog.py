@@ -82,6 +82,18 @@ class TestWithRepository(TempDirTestCase):
         assert_less_equal(before, timestamp)
         assert_greater(after, timestamp)
 
+    def test_single_commit_multiple_lines(self):
+        self.repo.index.commit('my root commit\n\nadditional information')
+        nodes = self.changelog.run()
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(6, len(children))
+        assert_equal('my root commit', children[0].text)
+        assert_equal('Test User', children[2].text)
+        assert_equal(str(children[5]),
+                     '<caption>additional information</caption>')
+
     def test_more_than_ten_commits(self):
         for n in range(15):
             self.repo.index.commit('commit #{0}'.format(n))
