@@ -1,0 +1,11 @@
+v3
+--
+* Add option to specify the number of revisions to display
+
+v2
+--
+* Split the display of the main commit message and the description
+
+v1
+--
+* Initial implementation
