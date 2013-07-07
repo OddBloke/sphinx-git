@@ -24,7 +24,7 @@ from sphinx.util.compat import Directive
 class GitChangelog(Directive):
 
     option_spec = {
-        'revisions': directives.unchanged,
+        'revisions': directives.nonnegative_int,
     }
 
     def run(self):
@@ -32,7 +32,7 @@ class GitChangelog(Directive):
         repo = Repo(env.srcdir)
         commits = repo.iter_commits()
         l = nodes.bullet_list()
-        revisions_to_display = int(self.options.get('revisions', 10))
+        revisions_to_display = self.options.get('revisions', 10)
         for commit in list(commits)[:revisions_to_display]:
             date_str = datetime.fromtimestamp(commit.authored_date)
             if '\n' in commit.message:

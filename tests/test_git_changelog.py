@@ -111,7 +111,7 @@ class TestWithRepository(TempDirTestCase):
     def test_specifying_number_of_commits(self):
         for n in range(15):
             self.repo.index.commit('commit #{0}'.format(n))
-        self.changelog.options = {'revisions': '5'}
+        self.changelog.options = {'revisions': 5}
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
         list_markup = BeautifulStoneSoup(str(nodes[0]))
