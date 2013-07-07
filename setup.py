@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name='sphinx-git',
     description='git Changelog for Sphinx',
-    version='2',
+    version='3',
     author='Daniel Watkins',
     author_email='daniel@daniel-watkins.co.uk',
     install_requires=['sphinx', 'GitPython'],
