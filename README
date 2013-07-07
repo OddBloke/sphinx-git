@@ -5,4 +5,8 @@ To use it, add 'sphinx_git' to 'extensions' in your Sphinx conf.py, and add:
 
 .. git_changelog::
 
-where you want the list of commits to appear.
+where you want the list of commits to appear.  This will display 10 commits by
+default; if you want a different number then pass in the revisions option:
+
+.. git_changelog::
+  :revisions: 5

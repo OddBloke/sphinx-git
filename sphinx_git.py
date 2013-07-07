@@ -16,18 +16,24 @@
 from datetime import datetime
 
 from docutils import nodes
+from docutils.parsers.rst import directives
 from git import Repo
 from sphinx.util.compat import Directive
 
 
 class GitChangelog(Directive):
 
+    option_spec = {
+        'revisions': directives.unchanged,
+    }
+
     def run(self):
         env = self.state.document.settings.env
         repo = Repo(env.srcdir)
         commits = repo.iter_commits()
         l = nodes.bullet_list()
-        for commit in list(commits)[:10]:
+        revisions_to_display = int(self.options.get('revisions', 10))
+        for commit in list(commits)[:revisions_to_display]:
             date_str = datetime.fromtimestamp(commit.authored_date)
             if '\n' in commit.message:
                 message, detailed_message = commit.message.split('\n', 1)

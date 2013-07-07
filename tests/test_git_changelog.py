@@ -21,6 +21,7 @@ from sphinx_git import GitChangelog
 class TestableGitChangelog(GitChangelog):
 
     def __init__(self):
+        self.options = {}
         self.state = Mock()
 
 
@@ -106,3 +107,17 @@ class TestWithRepository(TempDirTestCase):
         for n, child in zip(range(15, 5), l.childGenerator()):
             assert_in('commit #{0}'.format(n), child.text)
         assert_not_in('commit #4', l.text)
+
+    def test_specifying_number_of_commits(self):
+        for n in range(15):
+            self.repo.index.commit('commit #{0}'.format(n))
+        self.changelog.options = {'revisions': '5'}
+        nodes = self.changelog.run()
+        assert_equal(1, len(nodes))
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        assert_equal(1, len(list_markup.findAll('bullet_list')))
+        l = list_markup.bullet_list
+        assert_equal(5, len(l.findAll('list_item')))
+        for n, child in zip(range(15, 10), l.childGenerator()):
+            assert_in('commit #{0}'.format(n), child.text)
+        assert_not_in('commit #9', l.text)
