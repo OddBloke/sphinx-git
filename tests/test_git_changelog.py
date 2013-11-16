@@ -4,7 +4,7 @@ from tempfile import mkdtemp
 
 from BeautifulSoup import BeautifulStoneSoup
 from git import InvalidGitRepositoryError, Repo
-from mock import Mock
+from mock import ANY, call, Mock
 
 from tests.assertions import (
     assert_equal,
@@ -21,6 +21,7 @@ from sphinx_git import GitChangelog
 class TestableGitChangelog(GitChangelog):
 
     def __init__(self):
+        self.lineno = 123
         self.options = {}
         self.state = Mock()
 
@@ -150,4 +151,13 @@ class TestWithRepository(TempDirTestCase):
         nodes = self.changelog.run()
         assert_equal(
             1, self.changelog.state.document.reporter.warning.call_count
+        )
+
+    def test_line_number_displayed_in_multiple_option_warning(self):
+        self.changelog.options = {'rev-list': 'foo..', 'revisions': 12}
+        nodes = self.changelog.run()
+        document_reporter = self.changelog.state.document.reporter
+        assert_equal(
+            [call(ANY, line=self.changelog.lineno)],
+            document_reporter.warning.call_args_list
         )
