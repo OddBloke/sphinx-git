@@ -25,7 +25,7 @@ class GitChangelog(Directive):
 
     option_spec = {
         'revisions': directives.nonnegative_int,
-        'rev-list': unicode
+        'rev-list': unicode,
     }
 
     def run(self):
@@ -46,10 +46,9 @@ class GitChangelog(Directive):
     def _filter_commits(self, repo):
         if 'rev-list' in self.options:
             return repo.iter_commits(rev=self.options['rev-list'])
-        else:
-            commits = repo.iter_commits()
-            revisions_to_display = self.options.get('revisions', 10)
-            return list(commits)[:revisions_to_display]
+        commits = repo.iter_commits()
+        revisions_to_display = self.options.get('revisions', 10)
+        return list(commits)[:revisions_to_display]
 
     def _build_markup(self, commits):
         l = nodes.bullet_list()
