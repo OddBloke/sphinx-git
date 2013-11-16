@@ -1,3 +1,8 @@
+v5
+--
+
+* Generate a warning if both rev-list and revisions options are given
+
 v4
 --
 * Add rev-list option to specify a range of commits to show
