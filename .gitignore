@@ -2,3 +2,4 @@ sphinx_git.egg-info/
 dist/
 *.pyc
 .tox
+sample/_build
