@@ -10,3 +10,9 @@ default; if you want a different number then pass in the revisions option:
 
 .. git_changelog::
   :revisions: 5
+
+You can also use a range of commits with the rev-list option (man
+git-rev-parse for details on the syntax):
+
+.. git_changelog::
+    :rev-list: master..mybranch

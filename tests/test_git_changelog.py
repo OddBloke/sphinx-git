@@ -121,3 +121,26 @@ class TestWithRepository(TempDirTestCase):
         for n, child in zip(range(15, 10), l.childGenerator()):
             assert_in('commit #{0}'.format(n), child.text)
         assert_not_in('commit #9', l.text)
+
+    def test_specifying_a_rev_list(self):
+        self.repo.index.commit('before tag')
+        commit = self.repo.index.commit('at tag')
+        self.repo.index.commit('after tag')
+        self.repo.index.commit('last commit')
+        self.repo.create_tag('testtag', commit)
+
+        self.changelog.options = {'rev-list': 'testtag..'}
+        nodes = self.changelog.run()
+
+        assert_equal(1, len(nodes))
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        assert_equal(1, len(list_markup.findAll('bullet_list')))
+
+        l = list_markup.bullet_list
+        assert_equal(2, len(l.findAll('list_item')))
+
+        children = list(l.childGenerator())
+        first_element = children[0]
+        second_element = children[1]
+        assert_in('last commit', first_element.text)
+        assert_in('after tag', second_element.text)

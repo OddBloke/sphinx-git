@@ -25,15 +25,34 @@ class GitChangelog(Directive):
 
     option_spec = {
         'revisions': directives.nonnegative_int,
+        'rev-list': unicode,
     }
 
     def run(self):
+        commits = self._commits_to_display()
+        markup = self._build_markup(commits)
+        return markup
+
+    def _commits_to_display(self):
+        repo = self._find_repo()
+        commits = self._filter_commits(repo)
+        return commits
+
+    def _find_repo(self):
         env = self.state.document.settings.env
         repo = Repo(env.srcdir)
+        return repo
+
+    def _filter_commits(self, repo):
+        if 'rev-list' in self.options:
+            return repo.iter_commits(rev=self.options['rev-list'])
         commits = repo.iter_commits()
-        l = nodes.bullet_list()
         revisions_to_display = self.options.get('revisions', 10)
-        for commit in list(commits)[:revisions_to_display]:
+        return list(commits)[:revisions_to_display]
+
+    def _build_markup(self, commits):
+        l = nodes.bullet_list()
+        for commit in commits:
             date_str = datetime.fromtimestamp(commit.authored_date)
             if '\n' in commit.message:
                 message, detailed_message = commit.message.split('\n', 1)
