@@ -16,3 +16,5 @@ git-rev-parse for details on the syntax):
 
 .. git_changelog::
     :rev-list: master..mybranch
+
+You cannot currently apply a revisions filter to the rev-list output.
