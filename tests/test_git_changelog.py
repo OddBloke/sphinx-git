@@ -144,3 +144,10 @@ class TestWithRepository(TempDirTestCase):
         second_element = children[1]
         assert_in('last commit', first_element.text)
         assert_in('after tag', second_element.text)
+
+    def test_warning_given_if_rev_list_and_revisions_both_given(self):
+        self.changelog.options = {'rev-list': 'foo..', 'revisions': 12}
+        nodes = self.changelog.run()
+        assert_equal(
+            1, self.changelog.state.document.reporter.warning.call_count
+        )

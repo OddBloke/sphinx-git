@@ -29,6 +29,11 @@ class GitChangelog(Directive):
     }
 
     def run(self):
+        if 'rev-list' in self.options and 'revisions' in self.options:
+            self.state.document.reporter.warning(
+                'Both rev-list and revisions options given; proceeding using'
+                ' only rev-list.'
+            )
         commits = self._commits_to_display()
         markup = self._build_markup(commits)
         return markup
