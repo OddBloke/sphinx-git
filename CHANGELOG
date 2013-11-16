@@ -1,3 +1,7 @@
+v4
+--
+* Add rev-list option to specify a range of commits to show
+
 v3
 --
 * Add option to specify the number of revisions to display
