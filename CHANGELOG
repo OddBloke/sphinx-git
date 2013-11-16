@@ -1,6 +1,7 @@
 v4
 --
 * Add rev-list option to specify a range of commits to show
+  (Gregory Eric Sanderson)
 
 v3
 --
@@ -9,6 +10,9 @@ v3
 v2
 --
 * Split the display of the main commit message and the description
+  (Will Weaver)
+* Build using tox
+  (Marc Abramowitz)
 
 v1
 --
