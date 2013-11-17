@@ -18,3 +18,11 @@ git-rev-parse for details on the syntax):
     :rev-list: master..mybranch
 
 You cannot currently apply a revisions filter to the rev-list output.
+
+In some repositories, detailed messages (i.e. the bodies of commits) will look
+better in a preformatted block (e.g. if they include code samples).  You can
+enable preformatted blocks using the detailed-message-pre option:
+
+.. git_changelog:: :detailed-message-pre: True
+
+The detailed-message-pre option can be combined with all other options.

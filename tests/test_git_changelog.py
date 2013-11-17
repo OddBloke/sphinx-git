@@ -84,8 +84,10 @@ class TestWithRepository(TempDirTestCase):
         assert_less_equal(before, timestamp)
         assert_greater(after, timestamp)
 
-    def test_single_commit_multiple_lines(self):
-        self.repo.index.commit('my root commit\n\nadditional information')
+    def test_single_commit_default_detail_setting(self):
+        self.repo.index.commit(
+            'my root commit\n\nadditional information\nmore info'
+        )
         nodes = self.changelog.run()
         list_markup = BeautifulStoneSoup(str(nodes[0]))
         item = list_markup.bullet_list.list_item
@@ -94,7 +96,23 @@ class TestWithRepository(TempDirTestCase):
         assert_equal('my root commit', children[0].text)
         assert_equal('Test User', children[2].text)
         assert_equal(str(children[5]),
-                     '<caption>additional information</caption>')
+                     '<caption>additional information\nmore info</caption>')
+
+    def test_single_commit_preformmated_detail_lines(self):
+        self.repo.index.commit(
+            'my root commit\n\nadditional information\nmore info'
+        )
+        self.changelog.options = {'detailed-message-pre': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(6, len(children))
+        assert_equal(
+            str(children[5]),
+            '<literal_block xml:space="preserve">additional information\n'
+            'more info</literal_block>'
+        )
 
     def test_more_than_ten_commits(self):
         for n in range(15):

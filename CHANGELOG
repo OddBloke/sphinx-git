@@ -1,6 +1,9 @@
 dev
 ---
 
+* Add the detailed-message-pre option to toggle the display mode for the
+  detailed messages of commits.
+
 v5
 --
 

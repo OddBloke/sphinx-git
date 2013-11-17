@@ -30,3 +30,10 @@ This will generate a warning.
 .. git_changelog::
   :rev-list: v2..v4
   :revisions: 2
+
+Preformatted Detailed Messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. git_changelog::
+  :rev-list: v2..v4
+  :detailed-message-pre: True

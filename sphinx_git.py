@@ -26,6 +26,7 @@ class GitChangelog(Directive):
     option_spec = {
         'revisions': directives.nonnegative_int,
         'rev-list': unicode,
+        'detailed-message-pre': bool,
     }
 
     def run(self):
@@ -75,7 +76,12 @@ class GitChangelog(Directive):
                 nodes.emphasis(text=str(date_str))
             ]
             if detailed_message:
-                item.append(nodes.caption(text=detailed_message.strip()))
+                detailed_message = detailed_message.strip()
+                if self.options.get('detailed-message-pre', False):
+                    item.append(
+                        nodes.literal_block(text=detailed_message))
+                else:
+                    item.append(nodes.caption(text=detailed_message))
             l.append(item)
         return [l]
 
