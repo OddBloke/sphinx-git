@@ -1,5 +1,5 @@
-dev
----
+v7
+--
 
 * Update GitPython requirement in setup.py.
 
