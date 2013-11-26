@@ -8,7 +8,7 @@ Contents
     :maxdepth: 2
 
     getting-started
-    examples
+    using
     contributing
 
 Recent Changes
