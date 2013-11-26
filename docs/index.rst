@@ -16,6 +16,7 @@ Contents
 
     getting-started
     using
+    read-the-docs
     contributing
 
 .. _recent_changes:
