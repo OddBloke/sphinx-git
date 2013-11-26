@@ -1,7 +1,5 @@
 from setuptools import setup
 
-from sphinx_git import version
-
 
 execfile('sphinx_git/version.py')
 
