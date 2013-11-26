@@ -1,13 +1,15 @@
 Welcome to sphinx-git's documentation!
 ======================================
 
-.. rubric:: Contents
+Contents
+--------
 
 .. toctree::
     :maxdepth: 2
 
     examples
 
-.. rubric:: Recent Changes
+Recent Changes
+--------------
 
 .. git_changelog::
