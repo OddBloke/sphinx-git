@@ -41,9 +41,7 @@ Once you've got a patch ready, check the following things:
   * Pylint on the sphinx_git package
   * Passing unit tests (of course!)
 * You've added a line to the CHANGELOG
-
-Optionally, if you're modifying the output that sphinx-git produces, you might
-also want to add an example to ``docs/examples.rst``.
+* You've added documentation (if appropriate)
 
 .. _open up an issue in GitHub: https://github.com/OddBloke/sphinx-git/issues/new
 .. _Travis CI build: https://travis-ci.org/OddBloke/sphinx-git/pull_requests
