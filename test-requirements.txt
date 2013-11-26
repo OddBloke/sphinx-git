@@ -1,4 +1,0 @@
-nose
-mock
-unittest2
-BeautifulSoup
