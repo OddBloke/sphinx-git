@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/OddBloke/sphinx-git.png?branch=master
+    :target: https://travis-ci.org/OddBloke/sphinx-git
+
 sphinx-git allows you to include a git changelog of your Sphinx documentation
 within the documentation.
 
