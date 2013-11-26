@@ -3,6 +3,6 @@ python:
  - "2.6"
  - "2.7"
 script:
- - pep8 sphinx_git.py tests/
- - pylint --rcfile=.pylintrc sphinx_git.py
+ - pep8 sphinx_git/ tests/
+ - pylint --rcfile=.pylintrc sphinx_git/
  - nosetests
