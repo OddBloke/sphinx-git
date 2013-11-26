@@ -6,6 +6,8 @@ Welcome to sphinx-git's documentation!
 .. toctree::
     :maxdepth: 2
 
+    examples
+
 .. rubric:: Recent Changes
 
 .. git_changelog::
