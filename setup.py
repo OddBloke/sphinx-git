@@ -1,6 +1,9 @@
 from setuptools import setup
 
-from sphinx_git.version import __version__ as version
+from sphinx_git import version
+
+
+version = version.__version__
 
 
 setup(
