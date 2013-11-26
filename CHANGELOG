@@ -1,6 +1,7 @@
 dev
 ---
 
+* Output detailed commit messages as paragraphs rather than captions to fix PDF output.
 * Add documentation.
 * Reshuffle how the build works.
 *

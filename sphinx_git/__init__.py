@@ -81,7 +81,7 @@ class GitChangelog(Directive):
                     item.append(
                         nodes.literal_block(text=detailed_message))
                 else:
-                    item.append(nodes.caption(text=detailed_message))
+                    item.append(nodes.paragraph(text=detailed_message))
             list_node.append(item)
         return [list_node]
 

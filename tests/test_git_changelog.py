@@ -95,8 +95,10 @@ class TestWithRepository(TempDirTestCase):
         assert_equal(6, len(children))
         assert_equal('my root commit', children[0].text)
         assert_equal('Test User', children[2].text)
-        assert_equal(str(children[5]),
-                     '<caption>additional information\nmore info</caption>')
+        assert_equal(
+            str(children[5]),
+            '<paragraph>additional information\nmore info</paragraph>'
+        )
 
     def test_single_commit_preformmated_detail_lines(self):
         self.repo.index.commit(
