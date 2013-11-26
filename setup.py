@@ -1,6 +1,6 @@
 from setuptools import setup
 
-from version import __version__ as version
+from sphinx_git.version import __version__ as version
 
 
 setup(
@@ -11,5 +11,5 @@ setup(
     author_email='daniel@daniel-watkins.co.uk',
     install_requires=['sphinx', 'GitPython>=0.3.2.RC1'],
     url="https://github.com/OddBloke/sphinx-git",
-    py_modules=['sphinx_git'],
+    packages=['sphinx_git'],
 )

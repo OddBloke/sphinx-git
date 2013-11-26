@@ -47,7 +47,7 @@ copyright = u'2013, Daniel Watkins'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-from version import __version__ as version
+from sphinx_git.version import __version__ as version
 # The short X.Y version.
 version = version
 # The full version, including alpha/beta/rc tags.
