@@ -58,7 +58,7 @@ class GitChangelog(Directive):
         return list(commits)[:revisions_to_display]
 
     def _build_markup(self, commits):
-        l = nodes.bullet_list()
+        list_node = nodes.bullet_list()
         for commit in commits:
             date_str = datetime.fromtimestamp(commit.authored_date)
             if '\n' in commit.message:
@@ -82,8 +82,8 @@ class GitChangelog(Directive):
                         nodes.literal_block(text=detailed_message))
                 else:
                     item.append(nodes.caption(text=detailed_message))
-            l.append(item)
-        return [l]
+            list_node.append(item)
+        return [list_node]
 
 
 def setup(app):
