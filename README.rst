@@ -8,25 +8,8 @@ To use it, add 'sphinx_git' to 'extensions' in your Sphinx conf.py, and add::
 
     .. git_changelog::
 
-where you want the list of commits to appear.  This will display 10 commits by
-default; if you want a different number then pass in the ``revisions`` option::
+where you want the list of commits to appear.
 
-    .. git_changelog::
-      :revisions: 5
+For more details, see `the documentation on Read the Docs`_.
 
-You can also use a range of commits with the ``rev-list`` option (``man
-git-rev-parse`` for details on the syntax)::
-
-    .. git_changelog::
-        :rev-list: master..mybranch
-
-You cannot currently apply a ``revisions`` filter to the ``rev-list`` output.
-
-In some repositories, detailed messages (i.e. the bodies of commits) will look
-better in a preformatted block (e.g. if they include code samples).  You can
-enable preformatted blocks using the ``detailed-message-pre`` option::
-
-    .. git_changelog::
-        :detailed-message-pre: True
-
-The ``detailed-message-pre`` option can be combined with all other options.
+.. _the documentation on Read the Docs: http://sphinx-git.readthedocs.org/en/latest/?utm_source=github&utm_medium=github&utm_campaign=github
