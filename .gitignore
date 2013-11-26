@@ -3,3 +3,4 @@ dist/
 *.pyc
 .tox
 sample/_build
+docs/_build
