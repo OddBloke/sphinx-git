@@ -37,8 +37,8 @@ Once you've got a patch ready, check the following things:
 * You've written tests for your change
 * The Travis CI build passes; this includes:
 
-  * PEP-8 on sphinx_git.py and the tests
-  * Pylint on sphinx_git.py
+  * PEP-8 on the sphinx_git package and the tests
+  * Pylint on the sphinx_git package
   * Passing unit tests (of course!)
 * You've added a line to the CHANGELOG
 
