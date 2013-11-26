@@ -3,6 +3,7 @@ mock
 nose
 pep8
 pylint
+travis-solo
 unittest2
 
 -e .

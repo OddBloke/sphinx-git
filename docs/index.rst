@@ -9,6 +9,7 @@ Contents
 
     getting-started
     examples
+    contributing
 
 Recent Changes
 --------------
