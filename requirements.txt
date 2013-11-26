@@ -1,6 +1,7 @@
-nose
-mock
-unittest2
 BeautifulSoup
+mock
+nose
+pep8
+unittest2
 
 -e .
