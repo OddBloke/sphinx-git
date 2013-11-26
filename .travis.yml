@@ -4,4 +4,5 @@ python:
  - "2.7"
 script:
  - pep8 sphinx_git.py tests/
+ - pylint --rcfile=.pylintrc sphinx_git.py
  - nosetests

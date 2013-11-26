@@ -2,6 +2,7 @@ BeautifulSoup
 mock
 nose
 pep8
+pylint
 unittest2
 
 -e .
