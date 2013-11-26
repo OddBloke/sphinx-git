@@ -4,3 +4,5 @@ dist/
 sample/_build
 docs/_build
 .travis-solo
+.ropeproject
+*.swp
