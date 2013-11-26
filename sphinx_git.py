@@ -21,9 +21,6 @@ from git import Repo
 from sphinx.util.compat import Directive
 
 
-__version__ = '8'
-
-
 class GitChangelog(Directive):
 
     option_spec = {

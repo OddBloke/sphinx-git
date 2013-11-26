@@ -1,6 +1,6 @@
 from setuptools import setup
 
-from sphinx_git import __version__ as version
+from version import __version__ as version
 
 
 setup(
