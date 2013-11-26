@@ -1,6 +1,6 @@
 sphinx_git.egg-info/
 dist/
 *.pyc
-.tox
 sample/_build
 docs/_build
+.travis-solo
