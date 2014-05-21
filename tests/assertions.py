@@ -17,7 +17,7 @@ _t = Dummy('nop')
 
 
 for at in [at for at in dir(_t) if
-           at.startswith('assert') and not '_' in at]:
+           at.startswith('assert') and '_' not in at]:
     pepd = pep8(at)
     vars()[pepd] = getattr(_t, at)
 
