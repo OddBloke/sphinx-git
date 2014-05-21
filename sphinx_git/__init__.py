@@ -71,7 +71,7 @@ class GitChangelog(Directive):
             item += [
                 nodes.strong(text=message),
                 nodes.inline(text=" by "),
-                nodes.emphasis(text=str(commit.author)),
+                nodes.emphasis(text=unicode(commit.author)),
                 nodes.inline(text=" at "),
                 nodes.emphasis(text=str(date_str))
             ]
