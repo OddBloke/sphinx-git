@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 from datetime import datetime
 from shutil import rmtree
 from tempfile import mkdtemp
@@ -71,6 +74,17 @@ class TestWithRepository(TempDirTestCase):
         assert_equal(5, len(children))
         assert_equal('my root commit', children[0].text)
         assert_equal('Test User', children[2].text)
+
+    def test_single_commit_message_and_user_display_with_non_ascii_chars(self):
+        self.repo.config_writer().set_value('user', 'name', 'þéßþ  Úßéë')
+        self.repo.index.commit('my root commit')
+        nodes = self.changelog.run()
+        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(5, len(children))
+        assert_equal('my root commit', children[0].text)
+        assert_equal(u'þéßþ  Úßéë', children[2].text)
 
     def test_single_commit_time_display(self):
         self.repo.index.commit('my root commit')
