@@ -21,6 +21,7 @@ from git import Repo
 from sphinx.util.compat import Directive
 
 
+# pylint: disable=too-few-public-methods
 class GitChangelog(Directive):
 
     option_spec = {
@@ -47,7 +48,7 @@ class GitChangelog(Directive):
 
     def _find_repo(self):
         env = self.state.document.settings.env
-        repo = Repo(env.srcdir)
+        repo = Repo(env.srcdir, search_parent_directories=True)
         return repo
 
     def _filter_commits(self, repo):

@@ -181,14 +181,16 @@ class TestWithRepository(TempDirTestCase):
         assert_in('after tag', second_element.text)
 
     def test_warning_given_if_rev_list_and_revisions_both_given(self):
-        self.changelog.options = {'rev-list': 'foo..', 'revisions': 12}
+        self.repo.index.commit('a commit')
+        self.changelog.options = {'rev-list': 'HEAD', 'revisions': 12}
         nodes = self.changelog.run()
         assert_equal(
             1, self.changelog.state.document.reporter.warning.call_count
         )
 
     def test_line_number_displayed_in_multiple_option_warning(self):
-        self.changelog.options = {'rev-list': 'foo..', 'revisions': 12}
+        self.repo.index.commit('a commit')
+        self.changelog.options = {'rev-list': 'HEAD', 'revisions': 12}
         nodes = self.changelog.run()
         document_reporter = self.changelog.state.document.reporter
         assert_equal(
