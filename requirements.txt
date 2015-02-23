@@ -2,7 +2,7 @@ BeautifulSoup
 mock
 nose
 pep8
-pylint
+pylint<1.4
 travis-solo
 unittest2
 
