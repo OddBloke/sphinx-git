@@ -108,7 +108,7 @@ git_commit_detail Directive
 ---------------------------
 
 The ``git_commit_detail`` directive produces information about the current commit in the
-repository against which the documentation is being built. The following options are availiable:
+repository against which the documentation is being built. The following options are available:
 
 branch
     Display the branch name.
