@@ -47,7 +47,8 @@ class GitCommitDetail(GitDirectiveBase):
         self.repo = self._find_repo()
         self.branch_name = self.repo.head.ref.name
         self.commit = self._get_commit()
-        self.sha_length = self.options.get('sha_length', self.default_sha_length)
+        self.sha_length = self.options.get('sha_length',
+                                           self.default_sha_length)
         markup = self._build_markup()
         return markup
 
@@ -89,8 +90,9 @@ class GitCommitDetail(GitDirectiveBase):
     def _github_link(self):
         try:
             url = self.repo.remotes.origin.url
+            url = url.replace('.git/', '').replace('.git', '')
             if 'github' in url:
-                commit_url = url[:-4] + '/commit/' + self.commit.hexsha
+                commit_url = url + '/commit/' + self.commit.hexsha
                 ref = nodes.reference('', self.commit.hexsha[:self.sha_length],
                                       refuri=commit_url)
                 par = nodes.paragraph('', '', ref)
@@ -103,6 +105,7 @@ class GitCommitDetail(GitDirectiveBase):
 
     def _commit_text_node(self):
         return nodes.emphasis(text=self.commit.hexsha[:self.sha_length])
+
 
 # pylint: disable=too-few-public-methods
 class GitChangelog(GitDirectiveBase):
