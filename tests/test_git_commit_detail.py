@@ -93,7 +93,8 @@ class TestWithRepository(TempDirTestCase):
         list_markup = BeautifulStoneSoup(str(nodes[0]))
         assert_is_not(list_markup.reference, None)
         assert_equal(
-            self.commit_detail.github_nonce_commit_base +self.repo.commit().hexsha,
+            self.commit_detail.github_nonce_commit_base +
+            self.repo.commit().hexsha,
             list_markup.reference['refuri']
         )
         assert_equal(
