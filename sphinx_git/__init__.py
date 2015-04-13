@@ -21,8 +21,94 @@ from git import Repo
 from sphinx.util.compat import Directive
 
 
+# pylint: disable=too-few-public-methods, abstract-method
+class GitDirectiveBase(Directive):
+    def _find_repo(self):
+        env = self.state.document.settings.env
+        repo = Repo(env.srcdir, search_parent_directories=True)
+        return repo
+
+
 # pylint: disable=too-few-public-methods
-class GitChangelog(Directive):
+class GitCommitDetail(GitDirectiveBase):
+    default_sha_length = 7
+
+    option_spec = {
+        'branch': bool,
+        'commit': bool,
+        'uncommitted': bool,
+        'untracked': bool,
+        'sha_length': int,
+        'no_github_link': bool,
+    }
+
+    # pylint: disable=attribute-defined-outside-init
+    def run(self):
+        self.repo = self._find_repo()
+        self.branch_name = self.repo.head.ref.name
+        self.commit = self._get_commit()
+        self.sha_length = self.options.get('sha_length',
+                                           self.default_sha_length)
+        markup = self._build_markup()
+        return markup
+
+    def _get_commit(self):
+        repo = self._find_repo()
+        return repo.commit()
+
+    def _build_markup(self):
+        field_list = nodes.field_list()
+        item = nodes.paragraph()
+        item.append(field_list)
+        if 'branch' in self.options:
+            name = nodes.field_name(text="Branch")
+            body = nodes.field_body()
+            body.append(nodes.emphasis(text=self.branch_name))
+            field = nodes.field()
+            field += [name, body]
+            field_list.append(field)
+        if 'commit' in self.options:
+            name = nodes.field_name(text="Commit")
+            body = nodes.field_body()
+            if 'no_github_link' in self.options:
+                body.append(self._commit_text_node())
+            else:
+                body.append(self._github_link())
+            field = nodes.field()
+            field += [name, body]
+            field_list.append(field)
+        if 'uncommitted' in self.options and self.repo.is_dirty():
+            item.append(nodes.warning('', nodes.inline(
+                text="There were uncommitted changes when this was compiled."
+            )))
+        if 'untracked' in self.options and self.repo.untracked_files:
+            item.append(nodes.warning('', nodes.inline(
+                text="There were untracked files when this was compiled."
+            )))
+        return [item]
+
+    def _github_link(self):
+        try:
+            url = self.repo.remotes.origin.url
+            url = url.replace('.git/', '').replace('.git', '')
+            if 'github' in url:
+                commit_url = url + '/commit/' + self.commit.hexsha
+                ref = nodes.reference('', self.commit.hexsha[:self.sha_length],
+                                      refuri=commit_url)
+                par = nodes.paragraph('', '', ref)
+                return par
+            else:
+                return self._commit_text_node()
+        except AttributeError as error:
+            print "ERROR: ", error
+            return self._commit_text_node()
+
+    def _commit_text_node(self):
+        return nodes.emphasis(text=self.commit.hexsha[:self.sha_length])
+
+
+# pylint: disable=too-few-public-methods
+class GitChangelog(GitDirectiveBase):
 
     option_spec = {
         'revisions': directives.nonnegative_int,
@@ -45,11 +131,6 @@ class GitChangelog(Directive):
         repo = self._find_repo()
         commits = self._filter_commits(repo)
         return commits
-
-    def _find_repo(self):
-        env = self.state.document.settings.env
-        repo = Repo(env.srcdir, search_parent_directories=True)
-        return repo
 
     def _filter_commits(self, repo):
         if 'rev-list' in self.options:
@@ -89,3 +170,4 @@ class GitChangelog(Directive):
 
 def setup(app):
     app.add_directive('git_changelog', GitChangelog)
+    app.add_directive('git_commit_detail', GitCommitDetail)

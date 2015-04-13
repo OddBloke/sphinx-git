@@ -49,3 +49,13 @@ what you want, which are outlined in the next section of the documentation.
 
 
 .. _the Sphinx documentation: http://sphinx-doc.org/tutorial.html
+
+Add Details of the Latest Commit to Your Project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also display information about the state of the repository when the documentation
+was compiled with the ``git_commit_detail`` directive::
+
+    .. git_commit_detail::
+        :branch:
+        :commit:

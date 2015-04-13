@@ -1,8 +1,8 @@
 Using sphinx-git
 ================
 
-Currently, sphinx-git provides a single extension to Sphinx: the
-``git_changelog`` directive.
+Currently, sphinx-git provides two extensions to Sphinx: the
+``git_changelog`` and ``git_commit_detail`` directives.
 
 git_changelog Directive
 -----------------------
@@ -102,3 +102,47 @@ becomes:
 
 .. [#patches]
     :doc:`Patches welcome! <contributing>`
+
+
+git_commit_detail Directive
+---------------------------
+
+The ``git_commit_detail`` directive produces information about the current commit in the
+repository against which the documentation is being built. The following options are available:
+
+branch
+    Display the branch name.
+
+commit
+    Display the commit hash.
+
+sha_length
+    Set the number of characters of the hash to display.
+
+no_github_link
+    By default, if the repository's origin remote is GitHub, the commit will
+    link to the GitHub page for the commit. Use this option to disable this.
+
+uncommitted
+    Show a warning if there are uncommitted changes in the repository.
+
+untracked
+    Show a warning if there are untracked files in the repository directory.
+
+For example::
+
+    .. git_commit_detail::
+        :branch:
+        :commit:
+        :sha_length: 10
+        :uncommitted:
+        :untracked:
+
+becomes
+
+    .. git_commit_detail::
+        :branch:
+        :commit:
+        :sha_length: 10
+        :uncommitted:
+        :untracked:
