@@ -100,7 +100,7 @@ class GitCommitDetail(GitDirectiveBase):
             else:
                 return self._commit_text_node()
         except AttributeError as error:
-            print "ERROR: ", error
+            print("ERROR: ", error)
             return self._commit_text_node()
 
     def _commit_text_node(self):
@@ -112,7 +112,7 @@ class GitChangelog(GitDirectiveBase):
 
     option_spec = {
         'revisions': directives.nonnegative_int,
-        'rev-list': unicode,
+        'rev-list': str,
         'detailed-message-pre': bool,
     }
 
@@ -153,7 +153,7 @@ class GitChangelog(GitDirectiveBase):
             item += [
                 nodes.strong(text=message),
                 nodes.inline(text=" by "),
-                nodes.emphasis(text=unicode(commit.author)),
+                nodes.emphasis(text=str(commit.author)),
                 nodes.inline(text=" at "),
                 nodes.emphasis(text=str(date_str))
             ]
