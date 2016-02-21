@@ -4,6 +4,3 @@ mock
 nose
 pep8
 pylint
-travis-solo
-
--e .
