@@ -46,7 +46,9 @@ class TestWithRepository(TempDirTestCase):
     def setup(self):
         super(TestWithRepository, self).setup()
         self.repo = Repo.init(self.root)
-        self.repo.config_writer().set_value('user', 'name', 'Test User')
+        config_writer = self.repo.config_writer()
+        config_writer.set_value('user', 'name', 'Test User')
+        config_writer.release()
 
     def test_commit_only(self):
         self.repo.index.commit('my root commit')

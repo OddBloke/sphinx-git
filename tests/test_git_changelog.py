@@ -48,10 +48,15 @@ class TestNoRepository(TempDirTestCase):
 
 class TestWithRepository(TempDirTestCase):
 
+    def _set_username(self, username):
+        config_writer = self.repo.config_writer()
+        config_writer.set_value('user', 'name', username)
+        config_writer.release()
+
     def setup(self):
         super(TestWithRepository, self).setup()
         self.repo = Repo.init(self.root)
-        self.repo.config_writer().set_value('user', 'name', 'Test User')
+        self._set_username('Test User')
 
     def test_no_commits(self):
         assert_raises(ValueError, self.changelog.run)
@@ -76,7 +81,7 @@ class TestWithRepository(TempDirTestCase):
         assert_equal('Test User', children[2].text)
 
     def test_single_commit_message_and_user_display_with_non_ascii_chars(self):
-        self.repo.config_writer().set_value('user', 'name', 'þéßþ  Úßéë')
+        self._set_username('þéßþ  Úßéë')
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
