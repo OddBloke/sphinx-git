@@ -1,4 +1,5 @@
-BeautifulSoup
+beautifulsoup4
+lxml
 mock
 nose
 pep8
