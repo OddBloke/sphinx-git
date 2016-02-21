@@ -2,9 +2,7 @@ BeautifulSoup
 mock
 nose
 pep8
-pylint<1.4
-astroid<1.3
+pylint
 travis-solo
-unittest2
 
 -e .

@@ -25,9 +25,10 @@ You can run this by doing the following::
     $ pip install tox
     $ tox
 
-This will run the build on both Python 2.6 and Python 2.7.  If you're on an
-environment that doesn't have both available then do the best you can, and then
-open up your pull request; Travis will pick this up and build it for you.
+This will run the build on all supported Python versions.  If you're on
+an environment that doesn't have both available then do the best you
+can, and then open up your pull request; Travis will pick this up and
+build it for you.
 
 Pull Request Checklist
 ~~~~~~~~~~~~~~~~~~~~~~

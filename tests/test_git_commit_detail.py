@@ -10,7 +10,7 @@ from mock import Mock
 
 from sphinx_git import GitCommitDetail
 
-from tests.assertions import (
+from nose.tools import (
     assert_equal,
     assert_greater,
     assert_less_equal,
