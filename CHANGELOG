@@ -1,12 +1,14 @@
 dev
 ---
 
-* 
+* Drop Python 2.6 support.
+* Add Python 3.4 and 3.5 support.
+* Add git_commit_detail directive. (pomalley)
 
 v9
 --
 
-* Work against the latest GitPython (pomalley).
+* Work against the latest GitPython. (pomalley)
 
 v8
 --
