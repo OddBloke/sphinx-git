@@ -3,7 +3,7 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 from git import InvalidGitRepositoryError, Repo
-from mock import ANY, call, Mock
+from mock import ANY, call
 
 from nose.tools import (
     assert_equal,
@@ -14,16 +14,13 @@ from nose.tools import (
     assert_raises,
 )
 
-from . import TempDirTestCase
+from . import MakeTestableMixin, TempDirTestCase
 from sphinx_git import GitChangelog
 
 
-class TestableGitChangelog(GitChangelog):
+class TestableGitChangelog(MakeTestableMixin, GitChangelog):
 
-    def __init__(self):
-        self.lineno = 123
-        self.options = {}
-        self.state = Mock()
+    pass
 
 
 class ChangelogTestCase(TempDirTestCase):

@@ -4,11 +4,10 @@ from tempfile import mkstemp
 from bs4 import BeautifulSoup
 
 from git import Repo
-from mock import Mock
 
 from sphinx_git import GitCommitDetail
 
-from . import TempDirTestCase
+from . import MakeTestableMixin, TempDirTestCase
 from nose.tools import (
     assert_equal,
     assert_in,
@@ -17,14 +16,9 @@ from nose.tools import (
 )
 
 
-class TestableGitCommitDetail(GitCommitDetail):
+class TestableGitCommitDetail(MakeTestableMixin, GitCommitDetail):
     github_nonce_url = 'https://github.com/no_user/no_repo.git/'
     github_nonce_commit_base = 'https://github.com/no_user/no_repo/commit/'
-
-    def __init__(self):
-        self.lineno = 123
-        self.options = {}
-        self.state = Mock()
 
 
 class TestCommitDetail(TempDirTestCase):
