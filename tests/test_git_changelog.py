@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-
-
 from datetime import datetime
-from shutil import rmtree
-from tempfile import mkdtemp
 
 from bs4 import BeautifulSoup
 from git import InvalidGitRepositoryError, Repo
-from mock import ANY, call, Mock
+from mock import ANY, call
 
 from nose.tools import (
     assert_equal,
@@ -18,35 +14,30 @@ from nose.tools import (
     assert_raises,
 )
 
+from . import MakeTestableMixin, TempDirTestCase
 from sphinx_git import GitChangelog
 
 
-class TestableGitChangelog(GitChangelog):
+class TestableGitChangelog(MakeTestableMixin, GitChangelog):
 
-    def __init__(self):
-        self.lineno = 123
-        self.options = {}
-        self.state = Mock()
+    pass
 
 
-class TempDirTestCase(object):
+class ChangelogTestCase(TempDirTestCase):
 
     def setup(self):
-        self.root = mkdtemp()
+        super(ChangelogTestCase, self).setup()
         self.changelog = TestableGitChangelog()
         self.changelog.state.document.settings.env.srcdir = self.root
 
-    def teardown(self):
-        rmtree(self.root)
 
-
-class TestNoRepository(TempDirTestCase):
+class TestNoRepository(ChangelogTestCase):
 
     def test_not_a_repository(self):
         assert_raises(InvalidGitRepositoryError, self.changelog.run)
 
 
-class TestWithRepository(TempDirTestCase):
+class TestWithRepository(ChangelogTestCase):
 
     def _set_username(self, username):
         config_writer = self.repo.config_writer()
@@ -92,8 +83,8 @@ class TestWithRepository(TempDirTestCase):
         assert_equal(u'þéßþ  Úßéë', children[2].text)
 
     def test_single_commit_time_display(self):
-        self.repo.index.commit('my root commit')
         before = datetime.now().replace(microsecond=0)
+        self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
         after = datetime.now()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
