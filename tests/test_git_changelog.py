@@ -83,8 +83,8 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(u'þéßþ  Úßéë', children[2].text)
 
     def test_single_commit_time_display(self):
-        self.repo.index.commit('my root commit')
         before = datetime.now().replace(microsecond=0)
+        self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
         after = datetime.now()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
