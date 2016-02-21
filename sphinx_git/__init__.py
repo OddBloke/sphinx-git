@@ -100,7 +100,7 @@ class GitCommitDetail(GitDirectiveBase):
             else:
                 return self._commit_text_node()
         except AttributeError as error:
-            print "ERROR: ", error
+            print("ERROR: ", error)
             return self._commit_text_node()
 
     def _commit_text_node(self):
