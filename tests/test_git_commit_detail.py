@@ -12,11 +12,7 @@ from sphinx_git import GitCommitDetail
 
 from nose.tools import (
     assert_equal,
-    assert_greater,
-    assert_less_equal,
     assert_in,
-    assert_not_in,
-    assert_raises,
     assert_is,
     assert_is_not,
 )
