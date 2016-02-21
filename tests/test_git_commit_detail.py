@@ -139,7 +139,7 @@ class TestWithRepository(TempDirTestCase):
         fd, name = mkstemp(dir=self.root)
         self.repo.index.add([name])
         self.repo.index.commit('my root commit')
-        os.write(fd, "some change")
+        os.write(fd, "some change".encode('utf-8'))
         os.close(fd)
         self.commit_detail.options = {'uncommitted': True}
         nodes = self.commit_detail.run()
