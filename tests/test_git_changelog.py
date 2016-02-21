@@ -9,7 +9,7 @@ from BeautifulSoup import BeautifulStoneSoup
 from git import InvalidGitRepositoryError, Repo
 from mock import ANY, call, Mock
 
-from tests.assertions import (
+from nose.tools import (
     assert_equal,
     assert_greater,
     assert_less_equal,
