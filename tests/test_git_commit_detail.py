@@ -3,7 +3,7 @@
 import os
 from shutil import rmtree
 from tempfile import mkdtemp, mkstemp
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 from git import Repo
 from mock import Mock
@@ -90,7 +90,7 @@ class TestWithRepository(TempDirTestCase):
         self.commit_detail.options = {'commit': True}
         self.repo.create_remote('origin', self.commit_detail.github_nonce_url)
         nodes = self.commit_detail.run()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_is_not(list_markup.reference, None)
         assert_equal(
             self.commit_detail.github_nonce_commit_base +
@@ -107,7 +107,7 @@ class TestWithRepository(TempDirTestCase):
         self.commit_detail.options = {'commit': True, 'no_github_link': True}
         self.repo.create_remote('origin', self.commit_detail.github_nonce_url)
         nodes = self.commit_detail.run()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_is(list_markup.reference, None)
 
     def test_sha_length(self):

@@ -5,7 +5,7 @@ from datetime import datetime
 from shutil import rmtree
 from tempfile import mkdtemp
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 from git import InvalidGitRepositoryError, Repo
 from mock import ANY, call, Mock
 
@@ -60,7 +60,7 @@ class TestWithRepository(TempDirTestCase):
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
         l = list_markup.bullet_list
         assert_equal(1, len(l.findAll('list_item')))
@@ -68,7 +68,7 @@ class TestWithRepository(TempDirTestCase):
     def test_single_commit_message_and_user_display(self):
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(5, len(children))
@@ -79,7 +79,7 @@ class TestWithRepository(TempDirTestCase):
         self.repo.config_writer().set_value('user', 'name', 'þéßþ  Úßéë')
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(5, len(children))
@@ -91,7 +91,7 @@ class TestWithRepository(TempDirTestCase):
         before = datetime.now().replace(microsecond=0)
         nodes = self.changelog.run()
         after = datetime.now()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         timestamp = datetime.strptime(children[4].text, '%Y-%m-%d %H:%M:%S')
@@ -103,7 +103,7 @@ class TestWithRepository(TempDirTestCase):
             'my root commit\n\nadditional information\nmore info'
         )
         nodes = self.changelog.run()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(6, len(children))
@@ -120,7 +120,7 @@ class TestWithRepository(TempDirTestCase):
         )
         self.changelog.options = {'detailed-message-pre': True}
         nodes = self.changelog.run()
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(6, len(children))
@@ -135,7 +135,7 @@ class TestWithRepository(TempDirTestCase):
             self.repo.index.commit('commit #{0}'.format(n))
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
         l = list_markup.bullet_list
         assert_equal(10, len(l.findAll('list_item')))
@@ -149,7 +149,7 @@ class TestWithRepository(TempDirTestCase):
         self.changelog.options = {'revisions': 5}
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
         l = list_markup.bullet_list
         assert_equal(5, len(l.findAll('list_item')))
@@ -168,7 +168,7 @@ class TestWithRepository(TempDirTestCase):
         nodes = self.changelog.run()
 
         assert_equal(1, len(nodes))
-        list_markup = BeautifulStoneSoup(str(nodes[0]))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
         l = list_markup.bullet_list
