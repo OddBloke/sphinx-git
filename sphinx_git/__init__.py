@@ -15,6 +15,7 @@
 
 from datetime import datetime
 
+import six
 from docutils import nodes
 from docutils.parsers.rst import directives
 from git import Repo
@@ -112,7 +113,7 @@ class GitChangelog(GitDirectiveBase):
 
     option_spec = {
         'revisions': directives.nonnegative_int,
-        'rev-list': unicode,
+        'rev-list': six.text_type,
         'detailed-message-pre': bool,
     }
 
@@ -153,7 +154,7 @@ class GitChangelog(GitDirectiveBase):
             item += [
                 nodes.strong(text=message),
                 nodes.inline(text=" by "),
-                nodes.emphasis(text=unicode(commit.author)),
+                nodes.emphasis(text=six.text_type(commit.author)),
                 nodes.inline(text=" at "),
                 nodes.emphasis(text=str(date_str))
             ]
