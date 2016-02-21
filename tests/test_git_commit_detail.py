@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-
 import os
-from shutil import rmtree
-from tempfile import mkdtemp, mkstemp
+from tempfile import mkstemp
 from bs4 import BeautifulSoup
 
 from git import Repo
@@ -10,6 +8,7 @@ from mock import Mock
 
 from sphinx_git import GitCommitDetail
 
+from . import TempDirTestCase
 from nose.tools import (
     assert_equal,
     assert_in,
@@ -28,19 +27,11 @@ class TestableGitCommitDetail(GitCommitDetail):
         self.state = Mock()
 
 
-class TempDirTestCase(object):
+class TestCommitDetail(TempDirTestCase):
     def setup(self):
-        self.root = mkdtemp()
+        super(TestCommitDetail, self).setup()
         self.commit_detail = TestableGitCommitDetail()
         self.commit_detail.state.document.settings.env.srcdir = self.root
-
-    def teardown(self):
-        rmtree(self.root)
-
-
-class TestWithRepository(TempDirTestCase):
-    def setup(self):
-        super(TestWithRepository, self).setup()
         self.repo = Repo.init(self.root)
         config_writer = self.repo.config_writer()
         config_writer.set_value('user', 'name', 'Test User')
