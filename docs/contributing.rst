@@ -19,11 +19,11 @@ If you feel confident enough, have a stab at scratching your own itch in
 sphinx-git.  Fork the project on GitHub, make your changes and submit a pull
 request.
 
-Pull requests will need to pass the `Travis CI build`_; you can run this by
-doing the following::
+Pull requests will need to pass the `Travis CI build`_, which uses tox.
+You can run this by doing the following::
 
-    $ pip install -r requirements.txt  # This installs all of the development requirements
-    $ travis-solo
+    $ pip install tox
+    $ tox
 
 This will run the build on both Python 2.6 and Python 2.7.  If you're on an
 environment that doesn't have both available then do the best you can, and then
