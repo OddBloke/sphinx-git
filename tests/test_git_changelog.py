@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from datetime import datetime
 
 from bs4 import BeautifulSoup
@@ -193,3 +194,53 @@ class TestWithRepository(ChangelogTestCase):
             [call(ANY, line=self.changelog.lineno)],
             document_reporter.warning.call_args_list
         )
+
+
+class TestWithOtherRepository(TestWithRepository):
+    """
+    The destination repository is not in the same repository as the rst files.
+    """
+    def setup(self):
+        super(TestWithOtherRepository, self).setup()
+        self.changelog.state.document.settings.env.srcdir = os.getcwd()
+        self.changelog.options = {'repo-dir' : self.root}
+
+    def test_single_commit_preformmated_detail_lines(self):
+        self.repo.index.commit(
+            'my root commit\n\nadditional information\nmore info'
+        )
+        self.changelog.options.update({'detailed-message-pre': True})
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(6, len(children))
+        assert_equal(
+            str(children[5]),
+            '<literal_block xml:space="preserve">additional information\n'
+            'more info</literal_block>'
+        )
+
+    def test_specifying_a_rev_list(self):
+        self.repo.index.commit('before tag')
+        commit = self.repo.index.commit('at tag')
+        self.repo.index.commit('after tag')
+        self.repo.index.commit('last commit')
+        self.repo.create_tag('testtag', commit)
+
+        self.changelog.options.update({'rev-list': 'testtag..'})
+        nodes = self.changelog.run()
+
+        assert_equal(1, len(nodes))
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        assert_equal(1, len(list_markup.findAll('bullet_list')))
+
+        l = list_markup.bullet_list
+        assert_equal(2, len(l.findAll('list_item')))
+
+        children = list(l.childGenerator())
+        first_element = children[0]
+        second_element = children[1]
+        assert_in('last commit', first_element.text)
+        assert_in('after tag', second_element.text)
+

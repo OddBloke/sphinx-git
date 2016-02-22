@@ -1,9 +1,7 @@
 from setuptools import setup
 
 
-exec(compile(
-    open('sphinx_git/version.py').read(), 'sphinx_git/version.py', 'exec'))
-
+exec(open('sphinx_git/version.py').read())
 
 setup(
     name='sphinx-git',
