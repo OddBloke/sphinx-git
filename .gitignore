@@ -8,3 +8,5 @@ docs/_build
 *.swp
 .tox
 build
+*~
+.idea
