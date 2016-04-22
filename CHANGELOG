@@ -1,7 +1,7 @@
 dev
 ---
 
-* 
+* Add filename_filter argument to git_changelog (Emmanuelle Delescolle) 
 
 v10.0.0
 -------
