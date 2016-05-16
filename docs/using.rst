@@ -78,6 +78,27 @@ will accept.  See `the man page`_ for details.
 
     Sphinx will output a warning if you specify both.
 
+Filter Revisons to Matching Only Certain Files Based on Filenames
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you only want to see the changelog regarding certain files (eg. for devops
+reasons you need to have both SaSS and CSS in your repository or you only want
+to see the changes made to the docs directory) you can use the
+``:filename_filter:`` argument with ``git_changelog``. ``:filename_filter:`` is
+expecting anything that can be evaluated as a regular expression. So::
+
+    .. git_changelog::
+        :filename_filter: doc/.*\.rst
+
+will produce the list of commits that modified documentation content.
+
+.. note::
+
+    The ``:filename_filter:`` argument is compatible with both ``:revisions:``
+    and ``:rev-list:``. Filtering on filenames is then performed on the
+    selected (number of) revisions.
+
+
 Preformatted Output for Detailed Messages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
+import re
 
 import six
 from docutils import nodes
@@ -115,6 +116,7 @@ class GitChangelog(GitDirectiveBase):
         'revisions': directives.nonnegative_int,
         'rev-list': six.text_type,
         'detailed-message-pre': bool,
+        'filename_filter': six.text_type,
     }
 
     def run(self):
@@ -135,10 +137,31 @@ class GitChangelog(GitDirectiveBase):
 
     def _filter_commits(self, repo):
         if 'rev-list' in self.options:
-            return repo.iter_commits(rev=self.options['rev-list'])
-        commits = repo.iter_commits()
-        revisions_to_display = self.options.get('revisions', 10)
-        return list(commits)[:revisions_to_display]
+            commits = repo.iter_commits(rev=self.options['rev-list'])
+        else:
+            commits = repo.iter_commits()
+            revisions_to_display = self.options.get('revisions', 10)
+            commits = list(commits)[:revisions_to_display]
+        if 'filename_filter' in self.options:
+            return self._filter_commits_on_filenames(commits)
+        return commits
+
+    def _filter_commits_on_filenames(self, commits):
+        filtered_commits = []
+        filter_exp = re.compile(self.options.get('filename_filter', r'.*'))
+        for commit in commits:
+            # SHA of an empty tree found at
+            # http://stackoverflow.com/questions/33916648/get-the-diff-details-of-first-commit-in-gitpython
+            # will be used to get the list of files of initial commit
+            compared_with = '4b825dc642cb6eb9a060e54bf8d69288fbee4904'
+            if len(commit.parents) > 0:
+                compared_with = commit.parents[0].hexsha
+            for diff in commit.diff(compared_with):
+                if filter_exp.match(diff.a_path) or \
+                        filter_exp.match(diff.b_path):
+                    filtered_commits.append(commit)
+                    break
+        return filtered_commits
 
     def _build_markup(self, commits):
         list_node = nodes.bullet_list()
