@@ -23,6 +23,27 @@ list.  If a commit has a detailed message (i.e. any part of the commit message
 that is not on the first line), that will be output below the list item for
 that commit.
 
+git_changelog_by_date Directive
+-------------------------------
+
+The ``git_changelog_by_date`` directive produces a list of commits in the
+repository inwhich the documentation build is happening, grouped and ordered
+by date. This is especially useful when using features like `rebase`
+
+``git_changelog_by_date`` has the same behaviour and options as
+``git_changelog``.
+
+ So::
+
+    .. git_changelog_by_date::
+
+produces:
+
+    .. git_changelog_by_date::
+
+As you can see, the top-most list is now a list of date. The commit date has
+also been removed from each's commit details as it is redundant.
+
 Changing Number of Revisions in Output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

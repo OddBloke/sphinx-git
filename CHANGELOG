@@ -1,6 +1,7 @@
 dev
 ---
 
+* Add git_changelog_by_date directive (Emmanuelle Delescolle)
 * Add filename_filter argument to git_changelog (Emmanuelle Delescolle) 
 
 v10.0.0
