@@ -27,7 +27,7 @@ git_changelog_by_date Directive
 -------------------------------
 
 The ``git_changelog_by_date`` directive produces a list of commits in the
-repository inwhich the documentation build is happening, grouped and ordered
+repository in which the documentation build is happening, grouped and ordered
 by date. This is especially useful when using features like `rebase`
 
 ``git_changelog_by_date`` has the same behaviour and options as
