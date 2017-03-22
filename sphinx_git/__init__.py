@@ -21,14 +21,14 @@ from docutils import nodes
 from docutils.parsers.rst import directives
 from git import Repo
 from sphinx.util.compat import Directive
-
+from os import path
 
 # pylint: disable=too-few-public-methods, abstract-method
 class GitDirectiveBase(Directive):
     def _find_repo(self):
         env = self.state.document.settings.env
         if env.config.git_respect_submodules:
-            srcdir = env.doc2path(env.docname)
+            srcdir = path.dirname(env.doc2path(env.docname, base=True))
         else:
             srcdir = env.srcdir
         return Repo(srcdir, search_parent_directories=True)
