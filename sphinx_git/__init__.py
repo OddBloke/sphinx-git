@@ -27,8 +27,11 @@ from sphinx.util.compat import Directive
 class GitDirectiveBase(Directive):
     def _find_repo(self):
         env = self.state.document.settings.env
-        repo = Repo(env.srcdir, search_parent_directories=True)
-        return repo
+        if env.config.git_respect_submodules:
+           srcdir = env.doc2path(env.docname)
+        else:
+           srcdir = env.srcdir
+        return Repo(srcdir, search_parent_directories=True)
 
 
 # pylint: disable=too-few-public-methods
@@ -195,3 +198,4 @@ class GitChangelog(GitDirectiveBase):
 def setup(app):
     app.add_directive('git_changelog', GitChangelog)
     app.add_directive('git_commit_detail', GitCommitDetail)
+    app.add_config_value('git_respect_submodules', False, 'env')
