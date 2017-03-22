@@ -28,9 +28,9 @@ class GitDirectiveBase(Directive):
     def _find_repo(self):
         env = self.state.document.settings.env
         if env.config.git_respect_submodules:
-           srcdir = env.doc2path(env.docname)
+            srcdir = env.doc2path(env.docname)
         else:
-           srcdir = env.srcdir
+            srcdir = env.srcdir
         return Repo(srcdir, search_parent_directories=True)
 
 
