@@ -227,3 +227,42 @@ class TestWithRepository(ChangelogTestCase):
 
         l = list_markup.bullet_list
         assert_equal(2, len(l.findAll('list_item')), nodes)
+
+    def test_single_commit_hide_details(self):
+        self.repo.index.commit(
+            'Another commit\n\nToo much information'
+        )
+        self.changelog.options = {'hide_details': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(5, len(children))
+        assert_equal('Another commit', children[0].text)
+        assert_equal('Test User', children[2].text)
+
+    def test_single_commit_message_hide_author(self):
+        self.repo.index.commit('Yet another commit')
+        self.changelog.options = {'hide_author': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        print(children)
+        assert_equal(3, len(children))
+        assert_equal('Yet another commit', children[0].text)
+        assert_not_in(' by Test User', children[1].text)
+        assert_in(' at ', children[1].text)
+
+    def test_single_commit_message_hide_date(self):
+        self.repo.index.commit('Yet yet another commit')
+        self.changelog.options = {'hide_date': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        print(children)
+        assert_equal(3, len(children))
+        assert_equal('Yet yet another commit', children[0].text)
+        assert_not_in(' at ', children[1].text)
+        assert_in(' by ', children[1].text)
