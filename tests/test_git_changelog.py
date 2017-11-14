@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import os
 from datetime import datetime
 
@@ -76,12 +79,12 @@ class TestWithRepository(ChangelogTestCase):
         self._set_username('þéßþ  Úßéë')
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
-        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        list_markup = BeautifulSoup(unicode(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(5, len(children))
         assert_equal('my root commit', children[0].text)
-        assert_equal(u'þéßþ  Úßéë', children[2].text)
+        assert_equal('þéßþ  Úßéë', children[2].text)
 
     def test_single_commit_time_display(self):
         before = datetime.now().replace(microsecond=0)
