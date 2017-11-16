@@ -155,7 +155,7 @@ class GitChangelog(GitDirectiveBase):
             # http://stackoverflow.com/questions/33916648/get-the-diff-details-of-first-commit-in-gitpython
             # will be used to get the list of files of initial commit
             compared_with = '4b825dc642cb6eb9a060e54bf8d69288fbee4904'
-            if len(commit.parents) > 0:
+            if commit.parents:
                 compared_with = commit.parents[0].hexsha
             for diff in commit.diff(compared_with):
                 if filter_exp.match(diff.a_path) or \
