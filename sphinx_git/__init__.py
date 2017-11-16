@@ -20,7 +20,7 @@ import six
 from docutils import nodes
 from docutils.parsers.rst import directives
 from git import Repo
-from sphinx.util.compat import Directive
+from docutils.parsers.rst import Directive
 
 
 # pylint: disable=too-few-public-methods, abstract-method
