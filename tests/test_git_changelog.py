@@ -79,7 +79,10 @@ class TestWithRepository(ChangelogTestCase):
         self._set_username('þéßþ  Úßéë')
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
-        list_markup = BeautifulSoup(unicode(nodes[0]), features='xml')
+        try:
+            list_markup = BeautifulSoup(unicode(nodes[0]), features='xml')
+        except NameError:  # Python3 is already Unicode-only
+            list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(5, len(children))
