@@ -16,11 +16,11 @@
 from datetime import datetime
 import re
 
-import six
+
 from docutils import nodes
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import Directive, directives
 from git import Repo
-from docutils.parsers.rst import Directive
+import six
 
 
 # pylint: disable=too-few-public-methods, abstract-method
