@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import os
 from datetime import datetime
 
@@ -59,8 +62,8 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
-        l = list_markup.bullet_list
-        assert_equal(1, len(l.findAll('list_item')))
+        list_items = list_markup.bullet_list
+        assert_equal(1, len(list_items.findAll('list_item')))
 
     def test_single_commit_message_and_user_display(self):
         self.repo.index.commit('my root commit')
@@ -76,12 +79,12 @@ class TestWithRepository(ChangelogTestCase):
         self._set_username('þéßþ  Úßéë')
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
-        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        list_markup = BeautifulSoup(u'{0}'.format(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(5, len(children))
         assert_equal('my root commit', children[0].text)
-        assert_equal(u'þéßþ  Úßéë', children[2].text)
+        assert_equal('þéßþ  Úßéë', children[2].text)
 
     def test_single_commit_time_display(self):
         before = datetime.now().replace(microsecond=0)
@@ -134,11 +137,11 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
-        l = list_markup.bullet_list
-        assert_equal(10, len(l.findAll('list_item')))
-        for n, child in zip(range(15, 5), l.childGenerator()):
+        list_items = list_markup.bullet_list
+        assert_equal(10, len(list_items.findAll('list_item')))
+        for n, child in zip(range(15, 5), list_items.childGenerator()):
             assert_in('commit #{0}'.format(n), child.text)
-        assert_not_in('commit #4', l.text)
+        assert_not_in('commit #4', list_items.text)
 
     def test_specifying_number_of_commits(self):
         for n in range(15):
@@ -148,11 +151,11 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
-        l = list_markup.bullet_list
-        assert_equal(5, len(l.findAll('list_item')))
-        for n, child in zip(range(15, 10), l.childGenerator()):
+        list_items = list_markup.bullet_list
+        assert_equal(5, len(list_items.findAll('list_item')))
+        for n, child in zip(range(15, 10), list_items.childGenerator()):
             assert_in('commit #{0}'.format(n), child.text)
-        assert_not_in('commit #9', l.text)
+        assert_not_in('commit #9', list_items.text)
 
     def test_specifying_a_rev_list(self):
         self.repo.index.commit('before tag')
@@ -168,10 +171,10 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')))
+        list_items = list_markup.bullet_list
+        assert_equal(2, len(list_items.findAll('list_item')))
 
-        children = list(l.childGenerator())
+        children = list(list_items.childGenerator())
         first_element = children[0]
         second_element = children[1]
         assert_in('last commit', first_element.text)
@@ -211,8 +214,8 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')), nodes)
+        list_items = list_markup.bullet_list
+        assert_equal(2, len(list_items.findAll('list_item')), nodes)
 
         next_file = os.path.join(self.repo.working_tree_dir, 'atxt')
         f = open(next_file, 'w+')
@@ -225,5 +228,44 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')), nodes)
+        list_items = list_markup.bullet_list
+        assert_equal(2, len(list_items.findAll('list_item')), nodes)
+
+    def test_single_commit_hide_details(self):
+        self.repo.index.commit(
+            'Another commit\n\nToo much information'
+        )
+        self.changelog.options = {'hide_details': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(5, len(children))
+        assert_equal('Another commit', children[0].text)
+        assert_equal('Test User', children[2].text)
+
+    def test_single_commit_message_hide_author(self):
+        self.repo.index.commit('Yet another commit')
+        self.changelog.options = {'hide_author': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        print(children)
+        assert_equal(3, len(children))
+        assert_equal('Yet another commit', children[0].text)
+        assert_not_in(' by Test User', children[1].text)
+        assert_in(' at ', children[1].text)
+
+    def test_single_commit_message_hide_date(self):
+        self.repo.index.commit('Yet yet another commit')
+        self.changelog.options = {'hide_date': True}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        print(children)
+        assert_equal(3, len(children))
+        assert_equal('Yet yet another commit', children[0].text)
+        assert_not_in(' at ', children[1].text)
+        assert_in(' by ', children[1].text)

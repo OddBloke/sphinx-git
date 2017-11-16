@@ -16,11 +16,11 @@
 from datetime import datetime
 import re
 
-import six
+
 from docutils import nodes
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import Directive, directives
 from git import Repo
-from sphinx.util.compat import Directive
+import six
 
 
 # pylint: disable=too-few-public-methods, abstract-method
@@ -99,11 +99,9 @@ class GitCommitDetail(GitDirectiveBase):
                                       refuri=commit_url)
                 par = nodes.paragraph('', '', ref)
                 return par
-            else:
-                return self._commit_text_node()
         except AttributeError as error:
             print("ERROR: ", error)
-            return self._commit_text_node()
+        return self._commit_text_node()
 
     def _commit_text_node(self):
         return nodes.emphasis(text=self.commit.hexsha[:self.sha_length])
@@ -117,6 +115,9 @@ class GitChangelog(GitDirectiveBase):
         'rev-list': six.text_type,
         'detailed-message-pre': bool,
         'filename_filter': six.text_type,
+        'hide_author': bool,
+        'hide_date': bool,
+        'hide_details': bool,
     }
 
     def run(self):
@@ -154,7 +155,7 @@ class GitChangelog(GitDirectiveBase):
             # http://stackoverflow.com/questions/33916648/get-the-diff-details-of-first-commit-in-gitpython
             # will be used to get the list of files of initial commit
             compared_with = '4b825dc642cb6eb9a060e54bf8d69288fbee4904'
-            if len(commit.parents) > 0:
+            if commit.parents:
                 compared_with = commit.parents[0].hexsha
             for diff in commit.diff(compared_with):
                 if filter_exp.match(diff.a_path) or \
@@ -174,20 +175,21 @@ class GitChangelog(GitDirectiveBase):
                 detailed_message = None
 
             item = nodes.list_item()
-            item += [
-                nodes.strong(text=message),
-                nodes.inline(text=" by "),
-                nodes.emphasis(text=six.text_type(commit.author)),
-                nodes.inline(text=" at "),
-                nodes.emphasis(text=str(date_str))
-            ]
+            item += nodes.strong(text=message)
+            if not self.options.get('hide_author'):
+                item += [nodes.inline(text=" by "),
+                         nodes.emphasis(text=six.text_type(commit.author))]
+            if not self.options.get('hide_date'):
+                item += [nodes.inline(text=" at "),
+                         nodes.emphasis(text=str(date_str))]
             if detailed_message:
-                detailed_message = detailed_message.strip()
-                if self.options.get('detailed-message-pre', False):
-                    item.append(
-                        nodes.literal_block(text=detailed_message))
-                else:
-                    item.append(nodes.paragraph(text=detailed_message))
+                if not self.options.get('hide_details'):
+                    detailed_message = detailed_message.strip()
+                    if self.options.get('detailed-message-pre', False):
+                        item.append(
+                            nodes.literal_block(text=detailed_message))
+                    else:
+                        item.append(nodes.paragraph(text=detailed_message))
             list_node.append(item)
         return [list_node]
 
