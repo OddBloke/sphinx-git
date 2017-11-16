@@ -99,11 +99,9 @@ class GitCommitDetail(GitDirectiveBase):
                                       refuri=commit_url)
                 par = nodes.paragraph('', '', ref)
                 return par
-            else:
-                return self._commit_text_node()
         except AttributeError as error:
             print("ERROR: ", error)
-            return self._commit_text_node()
+        return self._commit_text_node()
 
     def _commit_text_node(self):
         return nodes.emphasis(text=self.commit.hexsha[:self.sha_length])
