@@ -62,8 +62,8 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
-        l = list_markup.bullet_list
-        assert_equal(1, len(l.findAll('list_item')))
+        list_items = list_markup.bullet_list
+        assert_equal(1, len(list_items.findAll('list_item')))
 
     def test_single_commit_message_and_user_display(self):
         self.repo.index.commit('my root commit')
@@ -137,11 +137,11 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
-        l = list_markup.bullet_list
-        assert_equal(10, len(l.findAll('list_item')))
-        for n, child in zip(range(15, 5), l.childGenerator()):
+        list_items = list_markup.bullet_list
+        assert_equal(10, len(list_items.findAll('list_item')))
+        for n, child in zip(range(15, 5), list_items.childGenerator()):
             assert_in('commit #{0}'.format(n), child.text)
-        assert_not_in('commit #4', l.text)
+        assert_not_in('commit #4', list_items.text)
 
     def test_specifying_number_of_commits(self):
         for n in range(15):
@@ -151,11 +151,11 @@ class TestWithRepository(ChangelogTestCase):
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
-        l = list_markup.bullet_list
-        assert_equal(5, len(l.findAll('list_item')))
-        for n, child in zip(range(15, 10), l.childGenerator()):
+        list_items = list_markup.bullet_list
+        assert_equal(5, len(list_items.findAll('list_item')))
+        for n, child in zip(range(15, 10), list_items.childGenerator()):
             assert_in('commit #{0}'.format(n), child.text)
-        assert_not_in('commit #9', l.text)
+        assert_not_in('commit #9', list_items.text)
 
     def test_specifying_a_rev_list(self):
         self.repo.index.commit('before tag')
@@ -171,10 +171,10 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')))
+        list_items = list_markup.bullet_list
+        assert_equal(2, len(list_items.findAll('list_item')))
 
-        children = list(l.childGenerator())
+        children = list(list_items.childGenerator())
         first_element = children[0]
         second_element = children[1]
         assert_in('last commit', first_element.text)
@@ -214,8 +214,8 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')), nodes)
+        list_items = list_markup.bullet_list
+        assert_equal(2, len(list_items.findAll('list_item')), nodes)
 
         next_file = os.path.join(self.repo.working_tree_dir, 'atxt')
         f = open(next_file, 'w+')
@@ -228,8 +228,8 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         assert_equal(1, len(list_markup.findAll('bullet_list')))
 
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')), nodes)
+        list_items = list_markup.bullet_list
+        assert_equal(2, len(list_items.findAll('list_item')), nodes)
 
     def test_single_commit_hide_details(self):
         self.repo.index.commit(
