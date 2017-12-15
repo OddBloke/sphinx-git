@@ -276,4 +276,4 @@ class TestWithOtherRepository(TestWithRepository):
     def setup(self):
         super(TestWithOtherRepository, self).setup()
         self.changelog.state.document.settings.env.srcdir = os.getcwd()
-        self.changelog.options.update({'repo-dir' : self.root})
+        self.changelog.options.update({'repo-dir': self.root})
