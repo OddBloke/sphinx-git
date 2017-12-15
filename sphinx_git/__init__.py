@@ -184,14 +184,13 @@ class GitChangelog(GitDirectiveBase):
             if not self.options.get('hide_date'):
                 item += [nodes.inline(text=" at "),
                          nodes.emphasis(text=str(date_str))]
-            if detailed_message:
-                if not self.options.get('hide_details'):
-                    detailed_message = detailed_message.strip()
-                    if self.options.get('detailed-message-pre', False):
-                        item.append(
-                            nodes.literal_block(text=detailed_message))
-                    else:
-                        item.append(nodes.paragraph(text=detailed_message))
+            if detailed_message and not self.options.get('hide_details'):
+                detailed_message = detailed_message.strip()
+                if self.options.get('detailed-message-pre', False):
+                    item.append(
+                        nodes.literal_block(text=detailed_message))
+                else:
+                    item.append(nodes.paragraph(text=detailed_message))
             list_node.append(item)
         return [list_node]
 
