@@ -116,7 +116,7 @@ class TestWithRepository(ChangelogTestCase):
         self.repo.index.commit(
             'my root commit\n\nadditional information\nmore info'
         )
-        self.changelog.options = {'detailed-message-pre': True}
+        self.changelog.options.update({'detailed-message-pre': True})
         nodes = self.changelog.run()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
@@ -144,7 +144,7 @@ class TestWithRepository(ChangelogTestCase):
     def test_specifying_number_of_commits(self):
         for n in range(15):
             self.repo.index.commit('commit #{0}'.format(n))
-        self.changelog.options = {'revisions': 5}
+        self.changelog.options.update({'revisions': 5})
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
@@ -162,7 +162,7 @@ class TestWithRepository(ChangelogTestCase):
         self.repo.index.commit('last commit')
         self.repo.create_tag('testtag', commit)
 
-        self.changelog.options = {'rev-list': 'testtag..'}
+        self.changelog.options.update({'rev-list': 'testtag..'})
         nodes = self.changelog.run()
 
         assert_equal(1, len(nodes))
@@ -180,7 +180,7 @@ class TestWithRepository(ChangelogTestCase):
 
     def test_warning_given_if_rev_list_and_revisions_both_given(self):
         self.repo.index.commit('a commit')
-        self.changelog.options = {'rev-list': 'HEAD', 'revisions': 12}
+        self.changelog.options.update({'rev-list': 'HEAD', 'revisions': 12})
         nodes = self.changelog.run()
         assert_equal(
             1, self.changelog.state.document.reporter.warning.call_count
@@ -188,7 +188,7 @@ class TestWithRepository(ChangelogTestCase):
 
     def test_line_number_displayed_in_multiple_option_warning(self):
         self.repo.index.commit('a commit')
-        self.changelog.options = {'rev-list': 'HEAD', 'revisions': 12}
+        self.changelog.options.update({'rev-list': 'HEAD', 'revisions': 12})
         nodes = self.changelog.run()
         document_reporter = self.changelog.state.document.reporter
         assert_equal(
@@ -206,7 +206,7 @@ class TestWithRepository(ChangelogTestCase):
             self.repo.index.commit('commit with file {}'.format(file_name))
         self.repo.index.commit('commit without file')
 
-        self.changelog.options = {'filename_filter': 'a.*txt'}
+        self.changelog.options.update({'filename_filter': 'a.*txt'})
         nodes = self.changelog.run()
         assert_equal(1, len(nodes))
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
@@ -233,7 +233,7 @@ class TestWithRepository(ChangelogTestCase):
         self.repo.index.commit(
             'Another commit\n\nToo much information'
         )
-        self.changelog.options = {'hide_details': True}
+        self.changelog.options.update({'hide_details': True})
         nodes = self.changelog.run()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
@@ -244,7 +244,7 @@ class TestWithRepository(ChangelogTestCase):
 
     def test_single_commit_message_hide_author(self):
         self.repo.index.commit('Yet another commit')
-        self.changelog.options = {'hide_author': True}
+        self.changelog.options.update({'hide_author': True})
         nodes = self.changelog.run()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
@@ -257,7 +257,7 @@ class TestWithRepository(ChangelogTestCase):
 
     def test_single_commit_message_hide_date(self):
         self.repo.index.commit('Yet yet another commit')
-        self.changelog.options = {'hide_date': True}
+        self.changelog.options.update({'hide_date': True})
         nodes = self.changelog.run()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
@@ -276,43 +276,4 @@ class TestWithOtherRepository(TestWithRepository):
     def setup(self):
         super(TestWithOtherRepository, self).setup()
         self.changelog.state.document.settings.env.srcdir = os.getcwd()
-        self.changelog.options = {'repo-dir' : self.root}
-
-    def test_single_commit_preformmated_detail_lines(self):
-        self.repo.index.commit(
-            'my root commit\n\nadditional information\nmore info'
-        )
-        self.changelog.options.update({'detailed-message-pre': True})
-        nodes = self.changelog.run()
-        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
-        item = list_markup.bullet_list.list_item
-        children = list(item.childGenerator())
-        assert_equal(6, len(children))
-        assert_equal(
-            str(children[5]),
-            '<literal_block xml:space="preserve">additional information\n'
-            'more info</literal_block>'
-        )
-
-    def test_specifying_a_rev_list(self):
-        self.repo.index.commit('before tag')
-        commit = self.repo.index.commit('at tag')
-        self.repo.index.commit('after tag')
-        self.repo.index.commit('last commit')
-        self.repo.create_tag('testtag', commit)
-
-        self.changelog.options.update({'rev-list': 'testtag..'})
-        nodes = self.changelog.run()
-
-        assert_equal(1, len(nodes))
-        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
-        assert_equal(1, len(list_markup.findAll('bullet_list')))
-
-        l = list_markup.bullet_list
-        assert_equal(2, len(l.findAll('list_item')))
-
-        children = list(l.childGenerator())
-        first_element = children[0]
-        second_element = children[1]
-        assert_in('last commit', first_element.text)
-        assert_in('after tag', second_element.text)
+        self.changelog.options.update({'repo-dir' : self.root})
