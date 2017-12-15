@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 from tempfile import mkstemp
-from bs4 import BeautifulSoup
 
+from bs4 import BeautifulSoup
 from git import Repo
+from nose.tools import assert_equal, assert_in, assert_is, assert_is_not
 
 from sphinx_git import GitCommitDetail
 
 from . import MakeTestableMixin, TempDirTestCase
-from nose.tools import (
-    assert_equal,
-    assert_in,
-    assert_is,
-    assert_is_not,
-)
 
 
 class TestableGitCommitDetail(MakeTestableMixin, GitCommitDetail):
