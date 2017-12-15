@@ -6,18 +6,18 @@ import six
 from bs4 import BeautifulSoup
 from git import InvalidGitRepositoryError, Repo
 from mock import ANY, call
-
 from nose.tools import (
     assert_equal,
     assert_greater,
-    assert_less_equal,
     assert_in,
+    assert_less_equal,
     assert_not_in,
     assert_raises,
 )
 
-from . import MakeTestableMixin, TempDirTestCase
 from sphinx_git import GitChangelog
+
+from . import MakeTestableMixin, TempDirTestCase
 
 
 class TestableGitChangelog(MakeTestableMixin, GitChangelog):

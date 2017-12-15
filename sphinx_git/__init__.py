@@ -13,14 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from datetime import datetime
 import re
+from datetime import datetime
 
 import six
 from docutils import nodes
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import Directive, directives
 from git import Repo
-from sphinx.util.compat import Directive
 
 
 # pylint: disable=too-few-public-methods, abstract-method

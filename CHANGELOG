@@ -4,6 +4,8 @@ dev
 * Add filename_filter argument to git_changelog (Emmanuelle Delescolle) 
 * Add options to hide author, date and/or detail to git_changelog
   (Peter Mosmans)
+* Stop using a deprecated Sphinx API (allowing us to support future versions of
+  Sphinx).  (Peter Mosmans)
 
 v10.0.0
 -------
