@@ -30,6 +30,13 @@ underscore)::
 
     extensions = ['sphinx_git']
 
+There is one global switch that changes the behavior of sphinx-git when
+processing git submodules. Default behavior is that sphing-git renders
+the git history of the sphinx directory. If you want sphinx-git to
+render the history of the submodule instead you can add::
+
+    git_respect_submodules = True
+
 Add A git Changelog To Your Project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
