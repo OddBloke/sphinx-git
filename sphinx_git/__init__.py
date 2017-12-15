@@ -26,7 +26,8 @@ from git import Repo
 class GitDirectiveBase(Directive):
     def _find_repo(self):
         env = self.state.document.settings.env
-        repo = Repo(env.srcdir, search_parent_directories=True)
+        repo_dir = self.options.get('repo-dir', env.srcdir)
+        repo = Repo(repo_dir, search_parent_directories=True)
         return repo
 
 
@@ -118,6 +119,7 @@ class GitChangelog(GitDirectiveBase):
         'hide_author': bool,
         'hide_date': bool,
         'hide_details': bool,
+        'repo-dir': six.text_type,
     }
 
     def run(self):

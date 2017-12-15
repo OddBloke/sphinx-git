@@ -6,6 +6,8 @@ dev
   (Peter Mosmans)
 * Stop using a deprecated Sphinx API (allowing us to support future versions of
   Sphinx).  (Peter Mosmans)
+* Add repo-dir option, to display changelogs/commits for other repos
+  (boeddeker)
 
 v10.0.0
 -------
