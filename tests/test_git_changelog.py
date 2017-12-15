@@ -2,6 +2,7 @@
 import os
 from datetime import datetime
 
+import six
 from bs4 import BeautifulSoup
 from git import InvalidGitRepositoryError, Repo
 from mock import ANY, call
@@ -76,7 +77,7 @@ class TestWithRepository(ChangelogTestCase):
         self._set_username('þéßþ  Úßéë')
         self.repo.index.commit('my root commit')
         nodes = self.changelog.run()
-        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        list_markup = BeautifulSoup(six.text_type(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         assert_equal(5, len(children))
