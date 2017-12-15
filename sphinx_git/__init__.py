@@ -193,6 +193,63 @@ class GitChangelog(GitDirectiveBase):
         return [list_node]
 
 
+# pylint: disable=too-few-public-methods
+class GitChangelogByDate(GitChangelog):
+
+    # pylint: disable=no-self-use
+    def _add_date_node(self, dates_node, date_node, date_list_node):
+        if date_list_node is not None and date_node is not None:
+            date_node.append(date_list_node)
+            dates_node.append(date_node)
+
+    def _build_markup(self, commits):
+        dates_node = nodes.bullet_list()
+        date_node = None
+        date_list_node = None
+        cur_date = None
+
+        # commits are not always given in chronological order,
+        # especially when using rebase
+        commits.sort(key=lambda c: c.authored_date, reverse=True)
+
+        for commit in commits:
+            date_str = '{}'.format(
+                datetime.fromtimestamp(commit.authored_date)
+            ).split(' ')[0]
+            if date_str != cur_date:
+                self._add_date_node(dates_node, date_node, date_list_node)
+                date_node = nodes.list_item()
+                date_node.append(nodes.strong(text="On {}".format(date_str)))
+                date_list_node = nodes.bullet_list()
+                cur_date = date_str
+
+            if '\n' in commit.message:
+                message, detailed_message = commit.message.split('\n', 1)
+            else:
+                message = commit.message
+                detailed_message = None
+
+            item = nodes.list_item()
+            item += [
+                nodes.strong(text=message),
+                nodes.inline(text=" by "),
+                nodes.emphasis(text=six.text_type(commit.author)),
+            ]
+            if detailed_message:
+                detailed_message = detailed_message.strip()
+                if self.options.get('detailed-message-pre', False):
+                    item.append(
+                        nodes.literal_block(text=detailed_message))
+                else:
+                    item.append(nodes.paragraph(text=detailed_message))
+            date_list_node.append(item)
+
+        self._add_date_node(dates_node, date_node, date_list_node)
+
+        return [dates_node]
+
+
 def setup(app):
     app.add_directive('git_changelog', GitChangelog)
+    app.add_directive('git_changelog_by_date', GitChangelogByDate)
     app.add_directive('git_commit_detail', GitCommitDetail)
