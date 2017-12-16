@@ -48,15 +48,11 @@ class GitCommitDetail(GitDirectiveBase):
     def run(self):
         self.repo = self._find_repo()
         self.branch_name = self.repo.head.ref.name
-        self.commit = self._get_commit()
+        self.commit = self.repo.commit()
         self.sha_length = self.options.get('sha_length',
                                            self.default_sha_length)
         markup = self._build_markup()
         return markup
-
-    def _get_commit(self):
-        repo = self._find_repo()
-        return repo.commit()
 
     def _build_markup(self):
         field_list = nodes.field_list()
