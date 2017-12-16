@@ -1,5 +1,5 @@
-dev
----
+v10.1.0
+-------
 
 * Add filename_filter argument to git_changelog (Emmanuelle Delescolle) 
 * Add options to hide author, date and/or detail to git_changelog
