@@ -47,22 +47,20 @@ class GitCommitDetail(GitDirectiveBase):
     # pylint: disable=attribute-defined-outside-init
     def run(self):
         self.repo = self._find_repo()
-        self.branch_name = self.repo.head.ref.name
-        self.commit = self._get_commit()
+        self.branch_name = None
+        if not self.repo.head.is_detached:
+            self.branch_name = self.repo.head.ref.name
+        self.commit = self.repo.commit()
         self.sha_length = self.options.get('sha_length',
                                            self.default_sha_length)
         markup = self._build_markup()
         return markup
 
-    def _get_commit(self):
-        repo = self._find_repo()
-        return repo.commit()
-
     def _build_markup(self):
         field_list = nodes.field_list()
         item = nodes.paragraph()
         item.append(field_list)
-        if 'branch' in self.options:
+        if 'branch' in self.options and self.branch_name is not None:
             name = nodes.field_name(text="Branch")
             body = nodes.field_body()
             body.append(nodes.emphasis(text=self.branch_name))
