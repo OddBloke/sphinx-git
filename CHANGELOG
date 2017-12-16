@@ -1,7 +1,7 @@
 dev
 ---
 
-*
+* Handle generating commit details for detached HEADs.
 
 v10.1.0
 -------
