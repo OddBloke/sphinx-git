@@ -1,5 +1,5 @@
-dev
----
+v10.1.1
+-------
 
 * Handle generating commit details for detached HEADs.
 
