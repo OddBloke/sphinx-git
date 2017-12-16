@@ -124,3 +124,21 @@ class TestCommitDetail(TempDirTestCase):
         node_w = node_p[1]      # nodes.warning
         node_i = node_w[0]      # inline
         assert_in('uncommitted', node_i.astext())
+
+    def test_detached_head(self):
+        self.repo.index.commit('my root commit')
+        self.repo.index.commit('a second commit')
+        self.repo.head.reference = self.repo.commit('HEAD~')
+        assert self.repo.head.is_detached, "HEAD unexpectedly attached"
+
+        self.commit_detail.options = {'commit': True}
+        nodes = self.commit_detail.run()
+        node_p = nodes[0]       # <p> node
+        node_fl = node_p[0]     # field list
+        node_f = node_fl[0]     # field
+        assert_equal(1, len(node_fl))
+        assert_equal('Commit', node_f[0].astext())
+        assert_equal(
+            self.repo.commit().hexsha[:GitCommitDetail.default_sha_length],
+            node_f[1].astext()
+        )
