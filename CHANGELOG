@@ -6,12 +6,12 @@ dev
 v10.1.0
 -------
 
-* Add filename_filter argument to git_changelog (Emmanuelle Delescolle) 
-* Add options to hide author, date and/or detail to git_changelog
+* Add filename_filter argument to git_changelog. (Emmanuelle Delescolle)
+* Add options to hide author, date and/or detail to git_changelog.
   (Peter Mosmans)
-* Stop using a deprecated Sphinx API (allowing us to support future versions of
-  Sphinx).  (Peter Mosmans)
-* Add repo-dir option, to display changelogs/commits for other repos
+* Stop using a deprecated Sphinx API (allowing us to support future
+  versions of Sphinx).  (Peter Mosmans)
+* Add repo-dir option, to display changelogs/commits for other repos.
   (boeddeker)
 
 v10.0.0
@@ -29,10 +29,11 @@ v9
 v8
 --
 
-* Output detailed commit messages as paragraphs rather than captions to fix PDF output.
+* Output detailed commit messages as paragraphs rather than captions to
+  fix PDF output.
 * Add documentation.
 * Reshuffle how the build works.
-* Make sphinx_git a package rather than a module
+* Make sphinx_git a package rather than a module.
 
 v7
 --
@@ -48,24 +49,23 @@ v6
 v5
 --
 
-* Generate a warning if both rev-list and revisions options are given
+* Generate a warning if both rev-list and revisions options are given.
 
 v4
 --
-* Add rev-list option to specify a range of commits to show
+* Add rev-list option to specify a range of commits to show.
   (Gregory Eric Sanderson)
 
 v3
 --
-* Add option to specify the number of revisions to display
+* Add option to specify the number of revisions to display.
 
 v2
 --
-* Split the display of the main commit message and the description
+* Split the display of the main commit message and the description.
   (Will Weaver)
-* Build using tox
-  (Marc Abramowitz)
+* Build using tox. (Marc Abramowitz)
 
 v1
 --
-* Initial implementation
+* Initial implementation.
