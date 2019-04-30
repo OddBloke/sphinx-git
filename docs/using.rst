@@ -125,6 +125,59 @@ becomes:
     :doc:`Patches welcome! <contributing>`
 
 
+Hiding author name from change lines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you need clean output without author's names in changelog,
+then you can specify this preference using the ``:hide_author: True``
+argument, for example:
+
+    .. git_changelog::
+        :hide_author: 1
+
+.. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
+
+.. rubric:: Footnotes
+
+.. [#patches]
+    :doc:`Patches welcome! <contributing>`
+
+
+Hiding commit date from change lines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you need clean output without commit dates in changelog,
+then you can specify this preference using the ``:hide_date: True``
+argument, for example:
+
+    .. git_changelog::
+        :hide_date: True
+
+.. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
+
+.. rubric:: Footnotes
+
+.. [#patches]
+    :doc:`Patches welcome! <contributing>`
+
+
+Strong commit message text
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can format commit message text with bold by using
+the ``:detailed-message-strong: True`` argument, for example:
+
+    .. git_changelog::
+        :detailed-message-strong: True
+
+.. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
+
+.. rubric:: Footnotes
+
+.. [#patches]
+    :doc:`Patches welcome! <contributing>`
+
+
 git_commit_detail Directive
 ---------------------------
 
