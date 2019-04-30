@@ -175,7 +175,7 @@ class GitChangelog(GitDirectiveBase):
                 detailed_message = None
 
             item = nodes.list_item()
-            item += nodes.strong(text=message)
+            item += nodes.inline(text=message)
             if not self.options.get('hide_author'):
                 item += [nodes.inline(text=" by "),
                          nodes.emphasis(text=six.text_type(commit.author))]
