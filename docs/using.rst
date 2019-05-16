@@ -135,13 +135,6 @@ argument, for example:
     .. git_changelog::
         :hide_author: 1
 
-.. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
-
-.. rubric:: Footnotes
-
-.. [#patches]
-    :doc:`Patches welcome! <contributing>`
-
 
 Hiding commit date from change lines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,29 +146,16 @@ argument, for example:
     .. git_changelog::
         :hide_date: True
 
-.. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
-
-.. rubric:: Footnotes
-
-.. [#patches]
-    :doc:`Patches welcome! <contributing>`
-
 
 Strong commit message text
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can format commit message text with bold by using
-the ``:detailed-message-strong: True`` argument, for example:
+Commit message formatted with bold text by default.
+Use ``:detailed-message-strong: False`` argument if you prefer regular font,
+for example:
 
     .. git_changelog::
-        :detailed-message-strong: True
-
-.. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
-
-.. rubric:: Footnotes
-
-.. [#patches]
-    :doc:`Patches welcome! <contributing>`
+        :detailed-message-strong: False
 
 
 git_commit_detail Directive

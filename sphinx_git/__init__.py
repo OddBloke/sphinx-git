@@ -177,7 +177,7 @@ class GitChangelog(GitDirectiveBase):
 
             item = nodes.list_item()
             # choose detailed message style by detailed-message-strong option
-            if self.options.get('detailed-message-strong', False):
+            if self.options.get('detailed-message-strong', True):
                 item += nodes.strong(text=message)
             else:
                 item += nodes.inline(text=message)
