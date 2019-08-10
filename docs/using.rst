@@ -125,6 +125,39 @@ becomes:
     :doc:`Patches welcome! <contributing>`
 
 
+Hiding author name from change lines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you need clean output without author's names in changelog,
+then you can specify this preference using the ``:hide_author: True``
+argument, for example:
+
+    .. git_changelog::
+        :hide_author: 1
+
+
+Hiding commit date from change lines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you need clean output without commit dates in changelog,
+then you can specify this preference using the ``:hide_date: True``
+argument, for example:
+
+    .. git_changelog::
+        :hide_date: True
+
+
+Strong commit message text
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Commit message formatted with bold text by default.
+Use ``:detailed-message-strong: False`` argument if you prefer regular font,
+for example:
+
+    .. git_changelog::
+        :detailed-message-strong: False
+
+
 git_commit_detail Directive
 ---------------------------
 

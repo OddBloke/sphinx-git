@@ -113,6 +113,7 @@ class GitChangelog(GitDirectiveBase):
         'revisions': directives.nonnegative_int,
         'rev-list': six.text_type,
         'detailed-message-pre': bool,
+        'detailed-message-strong': bool,
         'filename_filter': six.text_type,
         'hide_author': bool,
         'hide_date': bool,
@@ -175,7 +176,12 @@ class GitChangelog(GitDirectiveBase):
                 detailed_message = None
 
             item = nodes.list_item()
-            item += nodes.strong(text=message)
+            # choose detailed message style by detailed-message-strong option
+            if self.options.get('detailed-message-strong', True):
+                item += nodes.strong(text=message)
+            else:
+                item += nodes.inline(text=message)
+
             if not self.options.get('hide_author'):
                 item += [nodes.inline(text=" by "),
                          nodes.emphasis(text=six.text_type(commit.author))]
