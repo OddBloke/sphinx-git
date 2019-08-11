@@ -1,7 +1,9 @@
 dev
 ---
 
-*
+* Add support for plain-formatting the commit message. instead of bold.
+  (Aleksey Marin)
+* Generated well-formed docutils trees. (amedama41)
 
 v10.1.1
 -------
