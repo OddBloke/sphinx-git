@@ -69,9 +69,11 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
-        assert_equal(5, len(children))
-        assert_equal('my root commit', children[0].text)
-        assert_equal('Test User', children[2].text)
+        assert_equal(1, len(children))
+        par_children = list(item.paragraph.childGenerator())
+        assert_equal(5, len(par_children))
+        assert_equal('my root commit', par_children[0].text)
+        assert_equal('Test User', par_children[2].text)
 
     def test_single_commit_message_and_user_display_with_non_ascii_chars(self):
         self._set_username('þéßþ  Úßéë')
@@ -80,9 +82,11 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(six.text_type(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
-        assert_equal(5, len(children))
-        assert_equal('my root commit', children[0].text)
-        assert_equal(u'þéßþ  Úßéë', children[2].text)
+        assert_equal(1, len(children))
+        par_children = list(item.paragraph.childGenerator())
+        assert_equal(5, len(par_children))
+        assert_equal('my root commit', par_children[0].text)
+        assert_equal(u'þéßþ  Úßéë', par_children[2].text)
 
     def test_single_commit_time_display(self):
         before = datetime.now().replace(microsecond=0)
@@ -90,7 +94,7 @@ class TestWithRepository(ChangelogTestCase):
         nodes = self.changelog.run()
         after = datetime.now()
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
-        item = list_markup.bullet_list.list_item
+        item = list_markup.bullet_list.list_item.paragraph
         children = list(item.childGenerator())
         timestamp = datetime.strptime(children[4].text, '%Y-%m-%d %H:%M:%S')
         assert_less_equal(before, timestamp)
@@ -104,11 +108,13 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
-        assert_equal(6, len(children))
-        assert_equal('my root commit', children[0].text)
-        assert_equal('Test User', children[2].text)
+        assert_equal(2, len(children))
+        par_children = list(item.paragraph.childGenerator())
+        assert_equal(5, len(par_children))
+        assert_equal('my root commit', par_children[0].text)
+        assert_equal('Test User', par_children[2].text)
         assert_equal(
-            str(children[5]),
+            str(children[1]),
             '<paragraph>additional information\nmore info</paragraph>'
         )
 
@@ -121,9 +127,9 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
-        assert_equal(6, len(children))
+        assert_equal(2, len(children))
         assert_equal(
-            str(children[5]),
+            str(children[1]),
             '<literal_block xml:space="preserve">additional information\n'
             'more info</literal_block>'
         )
@@ -238,9 +244,11 @@ class TestWithRepository(ChangelogTestCase):
         list_markup = BeautifulSoup(str(nodes[0]), features='xml')
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
-        assert_equal(5, len(children))
-        assert_equal('Another commit', children[0].text)
-        assert_equal('Test User', children[2].text)
+        assert_equal(1, len(children))
+        par_children = list(item.paragraph.childGenerator())
+        assert_equal(5, len(par_children))
+        assert_equal('Another commit', par_children[0].text)
+        assert_equal('Test User', par_children[2].text)
 
     def test_single_commit_message_hide_author(self):
         self.repo.index.commit('Yet another commit')
@@ -250,10 +258,12 @@ class TestWithRepository(ChangelogTestCase):
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         print(children)
-        assert_equal(3, len(children))
-        assert_equal('Yet another commit', children[0].text)
-        assert_not_in(' by Test User', children[1].text)
-        assert_in(' at ', children[1].text)
+        assert_equal(1, len(children))
+        par_children = list(item.paragraph.childGenerator())
+        assert_equal(3, len(par_children))
+        assert_equal('Yet another commit', par_children[0].text)
+        assert_not_in(' by Test User', par_children[1].text)
+        assert_in(' at ', par_children[1].text)
 
     def test_single_commit_message_hide_date(self):
         self.repo.index.commit('Yet yet another commit')
@@ -263,10 +273,12 @@ class TestWithRepository(ChangelogTestCase):
         item = list_markup.bullet_list.list_item
         children = list(item.childGenerator())
         print(children)
-        assert_equal(3, len(children))
-        assert_equal('Yet yet another commit', children[0].text)
-        assert_not_in(' at ', children[1].text)
-        assert_in(' by ', children[1].text)
+        assert_equal(1, len(children))
+        par_children = list(item.paragraph.childGenerator())
+        assert_equal(3, len(par_children))
+        assert_equal('Yet yet another commit', par_children[0].text)
+        assert_not_in(' at ', par_children[1].text)
+        assert_in(' by ', par_children[1].text)
 
 
 class TestWithOtherRepository(TestWithRepository):

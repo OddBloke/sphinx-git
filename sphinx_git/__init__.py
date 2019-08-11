@@ -176,18 +176,20 @@ class GitChangelog(GitDirectiveBase):
                 detailed_message = None
 
             item = nodes.list_item()
+            par = nodes.paragraph()
             # choose detailed message style by detailed-message-strong option
             if self.options.get('detailed-message-strong', True):
-                item += nodes.strong(text=message)
+                par += nodes.strong(text=message)
             else:
-                item += nodes.inline(text=message)
+                par += nodes.inline(text=message)
 
             if not self.options.get('hide_author'):
-                item += [nodes.inline(text=" by "),
-                         nodes.emphasis(text=six.text_type(commit.author))]
+                par += [nodes.inline(text=" by "),
+                        nodes.emphasis(text=six.text_type(commit.author))]
             if not self.options.get('hide_date'):
-                item += [nodes.inline(text=" at "),
-                         nodes.emphasis(text=str(date_str))]
+                par += [nodes.inline(text=" at "),
+                        nodes.emphasis(text=str(date_str))]
+            item.append(par)
             if detailed_message and not self.options.get('hide_details'):
                 detailed_message = detailed_message.strip()
                 if self.options.get('detailed-message-pre', False):
