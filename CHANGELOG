@@ -1,5 +1,5 @@
-dev
----
+v11.0.0
+-------
 
 * Add support for plain-formatting the commit message. instead of bold.
   (Aleksey Marin)
