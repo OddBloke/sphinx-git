@@ -21,6 +21,12 @@ from docutils import nodes
 from docutils.parsers.rst import Directive, directives
 from docutils.statemachine import StringList
 from git import Repo
+from sphinx.util.docutils import new_document
+
+try:
+    from recommonmark.parser import CommonMarkParser
+except ImportError:
+    CommonMarkParser = None
 
 
 # pylint: disable=too-few-public-methods, abstract-method
@@ -108,7 +114,7 @@ class GitCommitDetail(GitDirectiveBase):
 
 
 def get_details_style(argument):
-    return directives.choice(argument, ['pre', 'rst'])
+    return directives.choice(argument, ['pre', 'rst', 'md'])
 
 
 # pylint: disable=too-few-public-methods
@@ -134,7 +140,13 @@ class GitChangelog(GitDirectiveBase):
                 ' only rev-list.',
                 line=self.lineno
             )
-        if 'detailed-message-style' in self.options and \
+        detailed_message_style = self.options.get('detailed-message-style')
+        if detailed_message_style == 'md' and CommonMarkParser is None:
+            detailed_message_style = None
+            self.state.document.reporter.warning(
+                'detailed-message-style is md but recommonmark is not'
+                ' installed; processing ignoring detailed-message-style.')
+        if detailed_message_style is not None and \
                 'detailed-message-pre' in self.options:
             self.state.document.reporter.warning(
                 'Both detailed-message-style and detailed-message-pre options'
@@ -180,6 +192,8 @@ class GitChangelog(GitDirectiveBase):
 
     def _build_detailed_message(self, detailed_message):
         detailed_message_style = self.options.get('detailed-message-style')
+        if detailed_message_style == 'md' and CommonMarkParser is None:
+            detailed_message_style = None
         if detailed_message_style is None:
             if self.options.get('detailed-message-pre'):
                 detailed_message_style = 'pre'
@@ -187,16 +201,21 @@ class GitChangelog(GitDirectiveBase):
         detailed_message = detailed_message.strip()
         if detailed_message_style == 'pre':
             return [nodes.literal_block(text=detailed_message)]
-        if detailed_message_style == 'rst':
-            try:
+        try:
+            if detailed_message_style == 'rst':
                 node = nodes.Element()
                 lines = detailed_message.splitlines()
                 self.state.nested_parse(StringList(lines), 0, node)
                 return node.children
-            # pylint: disable=broad-except
-            except Exception as error:
-                self.state.document.reporter.warning(
-                    'Could not parse as rst: %s' % error)
+            if detailed_message_style == 'md':
+                document = new_document('', self.state.document.settings)
+                parser = CommonMarkParser()
+                parser.parse(detailed_message, document)
+                return document.children
+        # pylint: disable=broad-except
+        except Exception as error:
+            self.state.document.reporter.warning(
+                'Could not parse as %s: %s' % (detailed_message_style, error))
         return [nodes.paragraph(text=detailed_message)]
 
     def _build_markup(self, commits):

@@ -173,6 +173,34 @@ class TestWithRepository(ChangelogTestCase):
             '</list_item></bullet_list>'
         )
 
+    def test_single_commit_md_style_detail_lines(self):
+        self.repo.index.commit(
+            'my root commit\n\nadditional information\n'
+            '* item1: **description1**\n'
+            '* item2: *description2*'
+        )
+        self.changelog.options.update({'detailed-message-style': 'md'})
+
+        config = self.changelog.state.document.settings.env.config
+        config.recommonmark_config = {}
+        nodes = self.changelog.run()
+        list_markup = BeautifulSoup(str(nodes[0]), features='xml')
+        item = list_markup.bullet_list.list_item
+        children = list(item.childGenerator())
+        assert_equal(3, len(children))
+        assert_equal(
+            str(children[1]),
+            '<paragraph>additional information</paragraph>'
+        )
+        assert_equal(
+            str(children[2]),
+            '<bullet_list><list_item>'
+            '<paragraph>item1: <strong>description1</strong></paragraph>'
+            '</list_item><list_item>'
+            '<paragraph>item2: <emphasis>description2</emphasis></paragraph>'
+            '</list_item></bullet_list>'
+        )
+
     def test_single_commit_pre_style_detail_lines(self):
         self.repo.index.commit(
             'my root commit\n\nadditional information\nmore info'
