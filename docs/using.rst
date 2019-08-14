@@ -99,23 +99,59 @@ will produce the list of commits that modified documentation content.
     selected (number of) revisions.
 
 
-Preformatted Output for Detailed Messages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Changing Detailed Messages Output Style
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you would prefer for the detailed commit messages to be output as
-preformatted text (e.g. if you include code samples in your commit messages),
-then you can specify this preference using the ``:detailed-message-pre:``
-argument. So::
+non plain text format, then you can specify the style using the
+``detailed-message-style`` argument. The styles you can specify are 'pre',
+'rst', or, 'md'.
+
+If you would prefer for the messages to be output as preformatted text
+(e.g. if you include code samples in your commit messages),
+then you can specify 'pre' (This is same as specifying deprecated
+``detailed-message-pre``). So::
 
     .. git_changelog::
         :rev-list: 3669419^..3669419
-        :detailed-message-pre: True
+        :detailed-message-style: pre
 
 becomes:
 
     .. git_changelog::
         :rev-list: 3669419^..3669419
-        :detailed-message-pre: True
+        :detailed-message-style: pre
+
+If you would prefer for the messages to be parsed as reStructuredText,
+then you can specify 'rst'. So::
+
+    .. git_changelog::
+        :rev-list: d888873^..d888873
+        :detailed-message-style: rst
+
+becomes:
+
+    .. git_changelog::
+        :rev-list: d888873^..d888873
+        :detailed-message-style: rst
+
+If you would prefer for the messages to be parsed as Markdown (CommonMark),
+then you can specify 'md'. So::
+
+    .. git_changelog::
+        :rev-list: 0de9cd1^..0de9cd1
+        :detailed-message-style: md
+
+becomes:
+
+    .. git_changelog::
+        :rev-list: 0de9cd1^..0de9cd1
+        :detailed-message-style: md
+
+.. note::
+
+   The feature to output the messages as Markdown requires recommonmark package.
+   recommonmark is enable to be installed by pip.
 
 .. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
 
