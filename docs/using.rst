@@ -151,7 +151,13 @@ becomes:
 .. note::
 
    The feature to output the messages as Markdown requires recommonmark package.
-   recommonmark is enable to be installed by pip.
+   recommonmark is enable to be installed by pip::
+
+       pip install recommonmark
+
+   You can also install sphinx-git with recommonmark simultaneously::
+
+       pip install sphinx-git[markdown]
 
 .. _the man page: https://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html
 

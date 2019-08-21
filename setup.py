@@ -12,6 +12,9 @@ setup(
     author='Daniel Watkins',
     author_email='daniel@daniel-watkins.co.uk',
     install_requires=['six', 'sphinx', 'GitPython>=0.3.6'],
+    extras_require={
+        'markdown': ['recommonmark>=0.4.0'],
+    },
     url="https://github.com/OddBloke/sphinx-git",
     packages=['sphinx_git'],
 )
