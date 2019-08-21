@@ -1,7 +1,8 @@
 dev
 ---
 
-*
+* Add detailed-message-style option to specify the style of details.
+  (amedama41)
 
 v11.0.0
 -------
