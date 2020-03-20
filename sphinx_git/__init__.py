@@ -176,6 +176,7 @@ class GitChangelog(GitDirectiveBase):
                 detailed_message = None
 
             item = nodes.list_item()
+            item.attributes["ids"].append(commit.hexsha)
             par = nodes.paragraph()
             # choose detailed message style by detailed-message-strong option
             if self.options.get('detailed-message-strong', True):
