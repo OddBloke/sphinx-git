@@ -118,6 +118,7 @@ class GitChangelog(GitDirectiveBase):
         'hide_author': bool,
         'hide_date': bool,
         'hide_details': bool,
+        'hide_merge_commit': bool,
         'repo-dir': six.text_type,
     }
 
@@ -168,6 +169,10 @@ class GitChangelog(GitDirectiveBase):
     def _build_markup(self, commits):
         list_node = nodes.bullet_list()
         for commit in commits:
+            if self.options.get('hide_merge_commit'):
+                if len(commit.parents) > 1:
+                    continue
+
             date_str = datetime.fromtimestamp(commit.authored_date)
             if '\n' in commit.message:
                 message, detailed_message = commit.message.split('\n', 1)
