@@ -42,6 +42,7 @@ class GitCommitDetail(GitDirectiveBase):
         'untracked': bool,
         'sha_length': int,
         'no_github_link': bool,
+        'repo-dir': six.text_type,
     }
 
     # pylint: disable=attribute-defined-outside-init
