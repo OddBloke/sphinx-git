@@ -204,3 +204,6 @@ class GitChangelog(GitDirectiveBase):
 def setup(app):
     app.add_directive('git_changelog', GitChangelog)
     app.add_directive('git_commit_detail', GitCommitDetail)
+    return  {'parallel_read_safe': True, # support parallel modes
+            'parallel_write_safe': True,
+            }  
